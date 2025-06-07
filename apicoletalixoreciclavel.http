@@ -1,0 +1,6 @@
+@apicoletalixoreciclavel_HostAddress = http://localhost:5188
+
+GET {{apicoletalixoreciclavel_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
