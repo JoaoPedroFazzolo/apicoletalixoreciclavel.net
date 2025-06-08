@@ -36,4 +36,20 @@
       <_ContentIncludedByDefault Remove="apicoletalixoreciclavel.tests\obj\project.packagespec.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Configurations\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Configurations\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Configurations\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Configurations\**" />
+    </ItemGroup>
+
 </Project>

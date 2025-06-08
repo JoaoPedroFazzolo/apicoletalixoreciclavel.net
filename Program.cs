@@ -2,18 +2,15 @@ using System.Text;
 using apicoletalixoreciclavel;
 using apicoletalixoreciclavel.Data.Repository;
 using apicoletalixoreciclavel.Models;
-using apicoletalixoreciclavel.ViewModels;
 using apicoletalixoreciclavel.Services;
+using apicoletalixoreciclavel.ViewModels;
 using Asp.Versioning;
-using Asp.Versioning.ApiExplorer;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Oracle.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using ConfigureSwaggerOptions = apicoletalixoreciclavel.Configurations.ConfigureSwaggerOptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,50 +30,38 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IResiduoEletronicoService, ResiduoEletronicoService>();
 #endregion
 
-
 #region AutoMapper
-
-// Configura��o do AutoMapper
 var mapperConfig = new AutoMapper.MapperConfiguration(c => {
-    // Permite que cole��es nulas sejam mapeadas
     c.AllowNullCollections = true;
-    // Permite que valores de destino nulos sejam mapeados
     c.AllowNullDestinationValues = true;
 
     c.CreateMap<ResiduoEletronicoModel, ResiduoEletronicoViewModel>();
     c.CreateMap<ResiduoEletronicoViewModel, ResiduoEletronicoModel>();
-
 });
 
-// Cria o mapper com base na configura��o definida
 IMapper mapper = mapperConfig.CreateMapper();
-
-// Registra o IMapper como um servi�o singleton no container de DI do ASP.NET Core
 builder.Services.AddSingleton(mapper);
 #endregion
 
-
 #region Autenticacao
 builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("f+ujXAKHk00L5jlMXo2XhAWawsOoihNP1OiAM25lLSO57+X7uBMQgwPju6yzyePi")),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
-
-
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("f+ujXAKHk00L5jlMXo2XhAWawsOoihNP1OiAM25lLSO57+X7uBMQgwPju6yzyePi")),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+#endregion
 
 builder.Services.AddControllers();
-#endregion
 
 #region Versionamento
 builder.Services.AddApiVersioning(options =>
@@ -93,10 +78,7 @@ builder.Services.AddApiVersioning(options =>
     options.SubstituteApiVersionInUrl = true;
 });
 
-//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 builder.Services.AddSwaggerGen(options => options.OperationFilter<SwaggerDefaultValues>());
 #endregion
@@ -119,9 +101,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

@@ -2,35 +2,27 @@ using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
-namespace apicoletalixoreciclavel.Configurations
+namespace apicoletalixoreciclavel.Configurations;
+
+public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 {
-    public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+    private readonly IApiVersionDescriptionProvider _provider;
+
+    public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
     {
-        private readonly IApiVersionDescriptionProvider _provider;
+        _provider = provider;
+    }
 
-        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
+    public void Configure(SwaggerGenOptions options)
+    {
+        foreach (var desc in _provider.ApiVersionDescriptions)
         {
-            _provider = provider;
-        }
-
-        public void Configure(SwaggerGenOptions options)
-        {
-            foreach (var description in _provider.ApiVersionDescriptions)
+            options.SwaggerDoc(desc.GroupName, new OpenApiInfo
             {
-                options.SwaggerDoc(description.GroupName, new OpenApiInfo
-                {
-                    Title = $"API Coleta Lixo Reciclável - {description.GroupName.ToUpper()}",
-                    Version = description.ApiVersion.ToString(),
-                    Description = "Documentação gerada automaticamente via Swagger com suporte a versionamento.",
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Equipe de Desenvolvimento",
-                        Email = "contato@seudominio.com"
-                    }
-                });
-            }
+                Title = $"API Coleta Lixo Reciclável {desc.ApiVersion}",
+                Version = desc.ApiVersion.ToString()
+            });
         }
     }
 }
