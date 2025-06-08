@@ -1,12 +1,14 @@
 using apicoletalixoreciclavel.Models;
 using apicoletalixoreciclavel.Services;
 using apicoletalixoreciclavel.ViewModels;
+using Asp.Versioning;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apicoletalixoreciclavel.Controllers;
 [ApiController]
 [Route("api/[controller]")]
+[ApiVersion("1.0")]
 public class ResiduoEletronicoController : Controller
 {
     private readonly IMapper _mapper;

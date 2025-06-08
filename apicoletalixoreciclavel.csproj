@@ -12,11 +12,28 @@
         <PackageReference Include="AutoMapper" Version="14.0.0" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="DBContext" Version="1.0.0" />
+        <PackageReference Include="JWT" Version="11.0.0" />
+        <PackageReference Include="JWT.Bearer.Token.Validator" Version="2.0.1" />
+        <PackageReference Include="JWT.Core" Version="2.0.1" />
+        <PackageReference Include="JWTValidator" Version="1.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.5" />
+        <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.12.0" />
+        <PackageReference Include="Microsoft.OpenApi" Version="1.6.24" />
         <PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.80" />
-        <PackageReference Include="Swagger.Api" Version="1.0.0.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.4" />
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="8.1.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="apicoletalixoreciclavel.tests\obj\apicoletalixoreciclavel.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="apicoletalixoreciclavel.tests\obj\apicoletalixoreciclavel.tests.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="apicoletalixoreciclavel.tests\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="apicoletalixoreciclavel.tests\obj\project.packagespec.json" />
     </ItemGroup>
 
 </Project>
