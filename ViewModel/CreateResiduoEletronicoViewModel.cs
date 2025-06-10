@@ -7,7 +7,7 @@ namespace apicoletalixoreciclavel.ViewModels
         public string Modelo { get; set; }
         public string Estado { get; set; }
         
-        public string Status { get; set; } = "Pendente";
+        public string Status { get; set; }
 
         public long UsuarioId { get; set; }
     }

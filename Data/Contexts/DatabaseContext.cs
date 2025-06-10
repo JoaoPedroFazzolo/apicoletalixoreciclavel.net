@@ -24,8 +24,11 @@ public class DatabaseContext : DbContext
             entity.HasIndex(e => e.Email).IsUnique();
             entity.Property(e => e.Senha).IsRequired();
             entity.Property(e => e.Role).IsRequired();
-            entity.Property(e => e.ResiduoId);
             
+            entity.HasMany(u => u.ListaResiduos)
+                .WithOne(r => r.Usuario)
+                .HasForeignKey(r => r.UsuarioId)
+                .IsRequired();
         });
 
         modelBuilder.Entity<ResiduoEletronicoModel>(entity =>
@@ -38,11 +41,6 @@ public class DatabaseContext : DbContext
             entity.Property(e => e.Modelo).IsRequired();
             entity.Property(e => e.Estado).IsRequired();
             entity.Property(e => e.Status).IsRequired();
-
-            entity.HasOne(e => e.Usuario)
-                .WithMany()
-                .HasForeignKey(e => e.UsuarioId)
-                .IsRequired();
         });
     }
 }

@@ -41,7 +41,7 @@ public class ResiduoEletronicoController : Controller
     }
 
     [HttpPost]
-    public ActionResult Post([FromBody] ResiduoEletronicoViewModel viewModel)
+    public ActionResult Post([FromBody] CreateResiduoEletronicoViewModel viewModel)
     {
         var residuo = _mapper.Map<ResiduoEletronicoModel>(viewModel);
         _service.AdicionarResiduoEletronico(residuo);
@@ -49,7 +49,7 @@ public class ResiduoEletronicoController : Controller
     }
 
     [HttpPut("{id}")]
-    public ActionResult Put(int id, [FromBody] ResiduoEletronicoViewModel viewModel)
+    public ActionResult Put(int id, [FromBody] UpdateResiduoEletronicoViewModel viewModel)
     {
         var residuo = _service.ObterResiduoEletronicoPorId(id);
         if (residuo == null)

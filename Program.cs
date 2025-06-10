@@ -1,5 +1,6 @@
 using System.Text;
 using apicoletalixoreciclavel;
+using apicoletalixoreciclavel.Data.Contexts;
 using apicoletalixoreciclavel.Data.Repository;
 using apicoletalixoreciclavel.Models;
 using apicoletalixoreciclavel.Services;
@@ -14,12 +15,15 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 #region INICIALIZANDO O BANCO DE DADOS
-builder.Services.AddDbContext<apicoletalixoreciclavel.Data.Contexts.DatabaseContext>(options =>
-{
-    options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection"));
-});
+var connectionString = builder.Configuration.GetConnectionString("OracleConnection");
+builder.Services.AddDbContext<DatabaseContext>(
+    opt => opt.UseOracle(connectionString).EnableSensitiveDataLogging(true)
+);
 #endregion
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 
 #region Repositorios
 builder.Services.AddScoped<IResiduoEletronicoRepository, ResiduoEletronicoRepository>();
@@ -37,6 +41,12 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c => {
 
     c.CreateMap<ResiduoEletronicoModel, ResiduoEletronicoViewModel>();
     c.CreateMap<ResiduoEletronicoViewModel, ResiduoEletronicoModel>();
+    
+    c.CreateMap<CreateResiduoEletronicoViewModel, ResiduoEletronicoModel>();
+    c.CreateMap<ResiduoEletronicoModel, CreateResiduoEletronicoViewModel>();
+    
+    c.CreateMap<UpdateResiduoEletronicoViewModel, ResiduoEletronicoModel>();
+    c.CreateMap<ResiduoEletronicoModel, UpdateResiduoEletronicoViewModel>();
 });
 
 IMapper mapper = mapperConfig.CreateMapper();
