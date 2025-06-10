@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace apicoletalixoreciclavel.Controllers;
 
 [ApiController]
-[ApiVersion(1)]
-[Route("v{v:apiVersion}/[controller]")]
+feature/residuo_eletronico
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
