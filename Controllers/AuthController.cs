@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using apicoletalixoreciclavel.Data.Contexts;
 using apicoletalixoreciclavel.Models;
 using apicoletalixoreciclavel.Services;
 using Asp.Versioning;
@@ -17,7 +18,7 @@ public class AuthController : ControllerBase
 
     public AuthController()
     {
-        _authService = new AuthService(); // Em um cenário real, isso deve ser injetado via DI
+        _authService = new AuthService();
     }
 
     [HttpPost("login")]

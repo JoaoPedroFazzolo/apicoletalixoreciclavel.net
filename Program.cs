@@ -25,7 +25,6 @@ builder.Services.AddDbContext<DatabaseContext>(
 );
 #endregion
 // Add services to the container.
-feature/residuo_eletronico
 builder.Services.AddControllersWithViews();
 
 #region Repositorios

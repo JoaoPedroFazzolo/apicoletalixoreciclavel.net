@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace apicoletalixoreciclavel.Controllers;
 
 [ApiController]
-feature/residuo_eletronico
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 public class WeatherForecastController : ControllerBase
