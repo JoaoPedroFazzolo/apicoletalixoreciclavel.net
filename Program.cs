@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Asp.Versioning;
+using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,7 @@ builder.Services.AddDbContext<DatabaseContext>(
 );
 #endregion
 // Add services to the container.
+feature/residuo_eletronico
 builder.Services.AddControllersWithViews();
 
 #region Repositorios
@@ -70,10 +73,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 #endregion
-
 builder.Services.AddControllers();
 
-#region Versionamento
+#region Versionamento da API
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new ApiVersion(1);
@@ -88,9 +90,13 @@ builder.Services.AddApiVersioning(options =>
     options.SubstituteApiVersionInUrl = true;
 });
 
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 builder.Services.AddSwaggerGen(options => options.OperationFilter<SwaggerDefaultValues>());
+
+// Configuração avançada do Swagger
+builder.Services.AddEndpointsApiExplorer();
 #endregion
 
 var app = builder.Build();
@@ -111,7 +117,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
