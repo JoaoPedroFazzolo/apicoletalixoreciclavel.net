@@ -4,6 +4,6 @@ namespace apicoletalixoreciclavel.Services;
 
 public interface IAuthService
 {
-    UsuarioModel Authenticate(string username, string password);
+    Task<UsuarioModel?> Authenticate(string email, string password);
     public string GenerateJwtToken(UsuarioModel user);
 }

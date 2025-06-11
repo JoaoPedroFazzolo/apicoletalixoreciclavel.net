@@ -4,6 +4,7 @@ using System.Text;
 using apicoletalixoreciclavel.Data.Contexts;
 using apicoletalixoreciclavel.Models;
 using apicoletalixoreciclavel.Services;
+using apicoletalixoreciclavel.ViewModels;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -22,15 +23,27 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] UsuarioModel user)
+    public async Task<IActionResult> Login([FromBody] LoginViewModel model)
     {
-        var authenticatedUser = _authService.Authenticate(user.Nome, user.Senha);
+        var authenticatedUser = await _authService.Authenticate(model.Email, model.Senha);
+
         if (authenticatedUser == null)
         {
-            return Unauthorized();
+            return Unauthorized("Usuário ou senha inválidos.");
         }
 
         var token = _authService.GenerateJwtToken(authenticatedUser);
-        return Ok(new { Token = token });
+        return Ok(new
+        {
+            Token = token,
+            Usuario = new
+            {
+                authenticatedUser.UsuarioId,
+                authenticatedUser.Nome,
+                authenticatedUser.Email,
+                authenticatedUser.Role
+            }
+        });
     }
+
 }

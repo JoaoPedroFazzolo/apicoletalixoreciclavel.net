@@ -1,18 +1,33 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using apicoletalixoreciclavel.Data.Contexts;
 using apicoletalixoreciclavel.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace apicoletalixoreciclavel.Services;
 
 public class AuthService: IAuthService
 {
-    public UsuarioModel Authenticate(string username, string password)
+    private readonly DatabaseContext _context;
+
+    public AuthService(DatabaseContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
-    
+
+    public async Task<UsuarioModel?> Authenticate(string email, string password)
+    {
+        var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+
+        if (user == null)
+            return null;
+
+        bool senhaValida = BCrypt.Net.BCrypt.Verify(password, user.Senha);
+
+        return senhaValida ? user : null;
+    }
     public string GenerateJwtToken(UsuarioModel user)
     {
 
