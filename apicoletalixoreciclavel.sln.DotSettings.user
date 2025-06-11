@@ -6,6 +6,6 @@
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d7e06727_002D7729_002D434e_002D9afd_002D8337b40f945f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Get_ReturnsOkWithList_WhenResiduosExist" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::9A26B667-1059-433B-AF48-91F08210C123::net8.0::apicoletalixoreciclavel.Tests.Controllers.ResiduoEletronicoControllerTests.Get_ReturnsOkWithList_WhenResiduosExist&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::2AC3DC35-AC06-473A-9C5A-A177C2733BE0::net8.0::apicoletalixoreciclavel.tests.AuthControllerTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

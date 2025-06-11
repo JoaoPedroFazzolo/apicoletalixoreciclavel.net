@@ -14,11 +14,11 @@ namespace apicoletalixoreciclavel.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly AuthService _authService;
+    private readonly IAuthService _authService;
 
-    public AuthController()
+    public AuthController(IAuthService authService)
     {
-        _authService = new AuthService();
+        _authService = authService;
     }
 
     [HttpPost("login")]
@@ -30,37 +30,7 @@ public class AuthController : ControllerBase
             return Unauthorized();
         }
 
-        var token = GenerateJwtToken(authenticatedUser);
+        var token = _authService.GenerateJwtToken(authenticatedUser);
         return Ok(new { Token = token });
-    }
-
-
-    private string GenerateJwtToken(UsuarioModel user)
-    {
-
-        byte[] secret = Encoding.ASCII.GetBytes("f+ujXAKHk00L5jlMXo2XhAWawsOoihNP1OiAM25lLSO57+X7uBMQgwPju6yzyePi");
-        var securityKey = new SymmetricSecurityKey(secret);
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-
-        SecurityTokenDescriptor securityTokenDescriptor = new SecurityTokenDescriptor()
-        {
-            Subject = new System.Security.Claims.ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.Name, user.Nome),
-                new Claim(ClaimTypes.Role, user.Role),
-                new Claim(ClaimTypes.Hash, Guid.NewGuid().ToString())
-            }),
-            Expires = DateTime.UtcNow.AddMinutes(5),
-            Issuer = "fiap",
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(secret),
-                SecurityAlgorithms.HmacSha256Signature)
-        };
-
-        SecurityToken securityToken = jwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
-
-        return new JwtSecurityTokenHandler().WriteToken(securityToken);
     }
 }

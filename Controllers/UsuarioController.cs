@@ -1,5 +1,6 @@
 using apicoletalixoreciclavel.Data.Contexts;
 using apicoletalixoreciclavel.Models;
+using apicoletalixoreciclavel.Services;
 using apicoletalixoreciclavel.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +11,11 @@ namespace apicoletalixoreciclavel.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 public class UsuarioController : ControllerBase
 {
-    private readonly DatabaseContext _context;
+    private readonly IUsuarioService _usuarioService;
 
-    public UsuarioController(DatabaseContext context)
+    public UsuarioController(IUsuarioService usuarioService)
     {
-        _context = context;
+        _usuarioService = usuarioService;
     }
 
     [HttpPost("registro")]
@@ -23,37 +24,17 @@ public class UsuarioController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        if (string.IsNullOrWhiteSpace(model.Nome) ||
-            string.IsNullOrWhiteSpace(model.Email) ||
-            string.IsNullOrWhiteSpace(model.Senha))
+        var (sucesso, erro, usuario) = await _usuarioService.CriarUsuarioAsync(model);
+
+        if (!sucesso)
+            return erro == "Já existe um usuário com este e-mail." ? Conflict(erro) : BadRequest(erro);
+
+        return CreatedAtAction(nameof(CriarUsuario), new { id = usuario!.UsuarioId }, new
         {
-            return BadRequest("Nome, e-mail e senha são obrigatórios.");
-        }
-
-        var usuarioExistente = await _context.Usuarios
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Email == model.Email);
-
-        if (usuarioExistente != null)
-            return Conflict("Já existe um usuário com este e-mail.");
-
-        var novoUsuario = new UsuarioModel
-        {
-            Nome = model.Nome,
-            Email = model.Email,
-            Senha = BCrypt.Net.BCrypt.HashPassword(model.Senha),
-            Role = "User"
-        };
-
-        _context.Usuarios.Add(novoUsuario);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(CriarUsuario), new { id = novoUsuario.UsuarioId }, new
-        {
-            novoUsuario.UsuarioId,
-            novoUsuario.Nome,
-            novoUsuario.Email,
-            novoUsuario.Role
+            usuario.UsuarioId,
+            usuario.Nome,
+            usuario.Email,
+            usuario.Role
         });
     }
 }

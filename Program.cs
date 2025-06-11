@@ -34,6 +34,8 @@ builder.Services.AddScoped<IResiduoEletronicoRepository, ResiduoEletronicoReposi
 #region Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IResiduoEletronicoService, ResiduoEletronicoService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
 #endregion
 
 #region AutoMapper
