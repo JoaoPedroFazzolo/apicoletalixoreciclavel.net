@@ -37,7 +37,7 @@ namespace apicoletalixoreciclavel.Services
                 Nome = model.Nome,
                 Email = model.Email,
                 Senha = BCrypt.Net.BCrypt.HashPassword(model.Senha),
-                Role = "User"
+                Role = model.Role
             };
 
             _context.Usuarios.Add(novoUsuario);
