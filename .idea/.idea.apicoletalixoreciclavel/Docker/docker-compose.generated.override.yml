@@ -1,0 +1,20 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  apicoletalixoreciclavel:
+    build:
+      context: "/arquivos/programação/analiseEDesenvolvimentoDeSistemas/2ano/fase4/apicoletalixoreciclavel"
+      dockerfile: "Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/apicoletalixoreciclavel.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "apicoletalixoreciclavel:dev"
+    ports: []
+    volumes:
+    - "/arquivos/programação/analiseEDesenvolvimentoDeSistemas/2ano/fase4/apicoletalixoreciclavel:/app:rw"
+    - "/arquivos/programação/analiseEDesenvolvimentoDeSistemas/2ano/fase4/apicoletalixoreciclavel:/src:rw"
+    - "/home/joaopedro/.nuget/packages:/home/app/.nuget/packages"
+    working_dir: "/app"
