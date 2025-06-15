@@ -12,9 +12,10 @@ public class DatabaseContext : DbContext
 
     public virtual DbSet<UsuarioModel> Usuarios { get; set; }
     public virtual DbSet<ResiduoEletronicoModel> ResiduoEletronicos { get; set; }
+    public virtual DbSet<ColetaModel> Coletas { get; set; }
+    public virtual DbSet<PontoColetaModel> PontoColetas { get; set; }
     public virtual DbSet<RelatorioModel> Relatorios { get; set; }
     public DbSet<AlertaModel> Alertas { get; set; }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -93,6 +94,38 @@ public class DatabaseContext : DbContext
             entity.Property(e => e.DataGeracao).IsRequired();
             entity.Property(e => e.TipoRelatorio).IsRequired().HasMaxLength(50);
             entity.Property(e => e.Descricao).HasMaxLength(500);
+        });
+
+        modelBuilder.Entity<ColetaModel>(entity =>
+        {
+            entity.ToTable("coleta");
+            entity.HasKey(e => e.ColetaId);
+
+            entity.Property(e => e.DataColeta).IsRequired();
+
+            entity.HasOne(c => c.PontoColeta)
+                .WithMany(p => p.Coletas)
+                .HasForeignKey(c => c.PontoColetaId)
+                .IsRequired();
+
+            entity.HasOne(c => c.Residuo)
+                .WithMany()
+                .HasForeignKey(c => c.ResiduoId)
+                .IsRequired();
+        });
+
+        modelBuilder.Entity<PontoColetaModel>(entity =>
+        {
+            entity.ToTable("ponto_coleta");
+            entity.HasKey(e => e.PontoColetaId);
+
+            entity.Property(e => e.Nome).IsRequired();
+            entity.Property(e => e.Endereco).IsRequired();
+            entity.Property(e => e.Capacidade).IsRequired();
+
+            entity.HasMany(p => p.Coletas)
+                .WithOne(c => c.PontoColeta)
+                .HasForeignKey(c => c.PontoColetaId);
         });
     }
 }
