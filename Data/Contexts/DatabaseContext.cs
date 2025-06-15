@@ -12,6 +12,9 @@ public class DatabaseContext : DbContext
 
     public virtual DbSet<UsuarioModel> Usuarios { get; set; }
     public virtual DbSet<ResiduoEletronicoModel> ResiduoEletronicos { get; set; }
+    
+        public virtual DbSet<RelatorioModel> Relatorio { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,12 +22,12 @@ public class DatabaseContext : DbContext
         {
             entity.ToTable("usuario");
             entity.HasKey(e => e.UsuarioId);
-            
+
             entity.Property(e => e.Nome).IsRequired();
             entity.HasIndex(e => e.Email).IsUnique();
             entity.Property(e => e.Senha).IsRequired();
             entity.Property(e => e.Role).IsRequired();
-            
+
             entity.HasMany(u => u.ListaResiduos)
                 .WithOne(r => r.Usuario)
                 .HasForeignKey(r => r.UsuarioId)
