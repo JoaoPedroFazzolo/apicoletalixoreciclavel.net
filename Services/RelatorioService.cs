@@ -24,7 +24,7 @@ namespace apicoletalixoreciclavel.Services
 
         public void CriarRelatorio(RelatorioModel relatorio)
         {
-            if (string.IsNullOrEmpty(relatorio.Name))
+            if (string.IsNullOrEmpty(relatorio.Nome))
             {
                 throw new ArgumentException("O nome do relatório é obrigatório.");
             }
@@ -35,7 +35,7 @@ namespace apicoletalixoreciclavel.Services
 
         public void AtualizarRelatorio(RelatorioModel relatorio)
         {
-            if (string.IsNullOrEmpty(relatorio.Name))
+            if (string.IsNullOrEmpty(relatorio.Nome))
             {
                 throw new ArgumentException("O nome do relatório é obrigatório.");
             }

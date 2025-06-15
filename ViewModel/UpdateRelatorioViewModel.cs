@@ -1,18 +1,30 @@
 using System.ComponentModel.DataAnnotations;
 
-public class UpdateRelatorioViewModel
+namespace apicoletalixoreciclavel.ViewModels
 {
-    public long RelatorioId { get; set; }
-    
-    [Required(ErrorMessage = "O nome do relatório é obrigatório")]
-    [StringLength(100, ErrorMessage = "O nome deve ter no máximo 100 caracteres")]
-    public string Name { get; set; }
-}
+    public class UpdateRelatorioViewModel
+    {
+        public long RelatorioId { get; set; }
+        
+        [Required(ErrorMessage = "O nome do relatório é obrigatório")]
+        [StringLength(200, ErrorMessage = "O nome deve ter no máximo 200 caracteres")]
+        public string Nome { get; set; } 
+        
+        [StringLength(500, ErrorMessage = "A descrição deve ter no máximo 500 caracteres")]
+        public string? Descricao { get; set; }
+        
+        [Required(ErrorMessage = "O tipo do relatório é obrigatório")]
+        [StringLength(50, ErrorMessage = "O tipo deve ter no máximo 50 caracteres")]
+        public string TipoRelatorio { get; set; }
+    }
 
-public class RelatorioListViewModel
-{
-    public long RelatorioId { get; set; }
-    public string Name { get; set; }
-    public string DataGeracaoFormatada => DataGeracao.ToString("dd/MM/yyyy HH:mm");
-    public DateTime DataGeracao { get; set; }
+    public class RelatorioListViewModel
+    {
+        public long RelatorioId { get; set; }
+        public string Nome { get; set; }
+        public string? Descricao { get; set; }
+        public string TipoRelatorio { get; set; }
+        public string DataGeracaoFormatada => DataGeracao.ToString("dd/MM/yyyy HH:mm");
+        public DateTime DataGeracao { get; set; }
+    }
 }
