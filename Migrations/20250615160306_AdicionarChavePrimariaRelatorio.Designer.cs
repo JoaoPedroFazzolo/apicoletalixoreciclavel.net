@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 using apicoletalixoreciclavel.Data.Contexts;
@@ -11,9 +12,11 @@ using apicoletalixoreciclavel.Data.Contexts;
 namespace apicoletalixoreciclavel.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250615160306_AdicionarChavePrimariaRelatorio")]
+    partial class AdicionarChavePrimariaRelatorio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,23 +36,13 @@ namespace apicoletalixoreciclavel.Migrations
                     b.Property<DateTime>("DataGeracao")
                         .HasColumnType("TIMESTAMP(7)");
 
-                    b.Property<string>("Descricao")
-                        .HasMaxLength(500)
-                        .HasColumnType("NVARCHAR2(500)");
-
-                    b.Property<string>("Nome")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("NVARCHAR2(200)");
-
-                    b.Property<string>("TipoRelatorio")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.HasKey("RelatorioId");
 
-                    b.ToTable("Relatorio", (string)null);
+                    b.ToTable("Relatorio");
                 });
 
             modelBuilder.Entity("apicoletalixoreciclavel.Models.ResiduoEletronicoModel", b =>
@@ -62,28 +55,23 @@ namespace apicoletalixoreciclavel.Migrations
 
                     b.Property<string>("Estado")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Marca")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Modelo")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<long>("UsuarioId")
                         .HasColumnType("NUMBER(19)");
@@ -103,82 +91,34 @@ namespace apicoletalixoreciclavel.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("UsuarioId"));
 
-                    b.Property<string>("Cep")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(10)
-                        .HasColumnType("NVARCHAR2(10)")
-                        .HasDefaultValue("00000-000");
-
-                    b.Property<string>("Cidade")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasDefaultValue("Cidade não informada");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TIMESTAMP(7)")
-                        .HasDefaultValueSql("SYSDATE");
-
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.Property<string>("Endereco")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("NVARCHAR2(200)")
-                        .HasDefaultValue("Endereço não informado");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(2)
-                        .HasColumnType("NVARCHAR2(2)")
-                        .HasDefaultValue("SP");
+                        .HasColumnType("NVARCHAR2(450)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasDefaultValue("User");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Senha")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(255)
-                        .HasColumnType("NVARCHAR2(255)")
-                        .HasDefaultValue("senha123");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)")
-                        .HasDefaultValue("(00) 00000-0000");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.HasKey("UsuarioId");
 
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Usuario", (string)null);
+                    b.ToTable("usuario", (string)null);
                 });
 
             modelBuilder.Entity("apicoletalixoreciclavel.Models.ResiduoEletronicoModel", b =>
                 {
                     b.HasOne("apicoletalixoreciclavel.Models.UsuarioModel", "Usuario")
-                        .WithMany("ResiduosEletronicos")
+                        .WithMany("ListaResiduos")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -188,7 +128,7 @@ namespace apicoletalixoreciclavel.Migrations
 
             modelBuilder.Entity("apicoletalixoreciclavel.Models.UsuarioModel", b =>
                 {
-                    b.Navigation("ResiduosEletronicos");
+                    b.Navigation("ListaResiduos");
                 });
 #pragma warning restore 612, 618
         }

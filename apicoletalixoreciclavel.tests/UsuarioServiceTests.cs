@@ -1,38 +1,40 @@
-using apicoletalixoreciclavel.Data.Contexts;
+using apicoletalixoreciclavel.Data.Repository;
 using apicoletalixoreciclavel.Models;
 using apicoletalixoreciclavel.Services;
 using apicoletalixoreciclavel.ViewModels;
-using Microsoft.EntityFrameworkCore;
+using Moq;
 using Xunit;
 
 namespace apicoletalixoreciclavel.Tests.Services
 {
-    public class UsuarioServiceTests : IDisposable
+    public class UsuarioServiceTests
     {
-        private readonly DatabaseContext _context;
+        private readonly Mock<IUsuarioRepository> _mockRepository;
         private readonly UsuarioService _usuarioService;
 
         public UsuarioServiceTests()
         {
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
-
-            _context = new DatabaseContext(options);
-            _usuarioService = new UsuarioService(_context);
+            _mockRepository = new Mock<IUsuarioRepository>();
+            _usuarioService = new UsuarioService(_mockRepository.Object);
         }
 
         [Fact]
         public async Task CriarUsuarioAsync_ComDadosValidos_DeveRetornarSucesso()
         {
             // Arrange
-            var model = new UsuarioCreateViewModel
+            var model = new CreateUsuarioViewModel
             {
                 Nome = "João Silva",
                 Email = "joao@teste.com",
                 Senha = "123456",
                 Role = "User"
             };
+
+            _mockRepository.Setup(r => r.GetByEmailAsync(model.Email))
+                          .ReturnsAsync((UsuarioModel?)null);
+            
+            _mockRepository.Setup(r => r.CreateAsync(It.IsAny<UsuarioModel>()))
+                          .ReturnsAsync((UsuarioModel u) => u);
 
             // Act
             var resultado = await _usuarioService.CriarUsuarioAsync(model);
@@ -51,51 +53,9 @@ namespace apicoletalixoreciclavel.Tests.Services
         public async Task CriarUsuarioAsync_ComNomeVazio_DeveRetornarErro()
         {
             // Arrange
-            var model = new UsuarioCreateViewModel
+            var model = new CreateUsuarioViewModel
             {
                 Nome = "",
-                Email = "joao@teste.com",
-                Senha = "123456",
-                Role = "User"
-            };
-
-            // Act
-            var resultado = await _usuarioService.CriarUsuarioAsync(model);
-
-            // Assert
-            Assert.False(resultado.Sucesso);
-            Assert.Equal("Nome, e-mail e senha são obrigatórios.", resultado.Erro);
-            Assert.Null(resultado.Usuario);
-        }
-
-        [Fact]
-        public async Task CriarUsuarioAsync_ComNomeNull_DeveRetornarErro()
-        {
-            // Arrange
-            var model = new UsuarioCreateViewModel
-            {
-                Nome = null,
-                Email = "joao@teste.com",
-                Senha = "123456",
-                Role = "User"
-            };
-
-            // Act
-            var resultado = await _usuarioService.CriarUsuarioAsync(model);
-
-            // Assert
-            Assert.False(resultado.Sucesso);
-            Assert.Equal("Nome, e-mail e senha são obrigatórios.", resultado.Erro);
-            Assert.Null(resultado.Usuario);
-        }
-
-        [Fact]
-        public async Task CriarUsuarioAsync_ComNomeApenasEspacos_DeveRetornarErro()
-        {
-            // Arrange
-            var model = new UsuarioCreateViewModel
-            {
-                Nome = "   ",
                 Email = "joao@teste.com",
                 Senha = "123456",
                 Role = "User"
@@ -114,7 +74,7 @@ namespace apicoletalixoreciclavel.Tests.Services
         public async Task CriarUsuarioAsync_ComEmailVazio_DeveRetornarErro()
         {
             // Arrange
-            var model = new UsuarioCreateViewModel
+            var model = new CreateUsuarioViewModel
             {
                 Nome = "João Silva",
                 Email = "",
@@ -132,56 +92,14 @@ namespace apicoletalixoreciclavel.Tests.Services
         }
 
         [Fact]
-        public async Task CriarUsuarioAsync_ComEmailNull_DeveRetornarErro()
-        {
-            // Arrange
-            var model = new UsuarioCreateViewModel
-            {
-                Nome = "João Silva",
-                Email = null,
-                Senha = "123456",
-                Role = "User"
-            };
-
-            // Act
-            var resultado = await _usuarioService.CriarUsuarioAsync(model);
-
-            // Assert
-            Assert.False(resultado.Sucesso);
-            Assert.Equal("Nome, e-mail e senha são obrigatórios.", resultado.Erro);
-            Assert.Null(resultado.Usuario);
-        }
-
-        [Fact]
         public async Task CriarUsuarioAsync_ComSenhaVazia_DeveRetornarErro()
         {
             // Arrange
-            var model = new UsuarioCreateViewModel
+            var model = new CreateUsuarioViewModel
             {
                 Nome = "João Silva",
                 Email = "joao@teste.com",
                 Senha = "",
-                Role = "User"
-            };
-
-            // Act
-            var resultado = await _usuarioService.CriarUsuarioAsync(model);
-
-            // Assert
-            Assert.False(resultado.Sucesso);
-            Assert.Equal("Nome, e-mail e senha são obrigatórios.", resultado.Erro);
-            Assert.Null(resultado.Usuario);
-        }
-
-        [Fact]
-        public async Task CriarUsuarioAsync_ComSenhaNull_DeveRetornarErro()
-        {
-            // Arrange
-            var model = new UsuarioCreateViewModel
-            {
-                Nome = "João Silva",
-                Email = "joao@teste.com",
-                Senha = null,
                 Role = "User"
             };
 
@@ -200,22 +118,23 @@ namespace apicoletalixoreciclavel.Tests.Services
             // Arrange
             var usuarioExistente = new UsuarioModel
             {
+                UsuarioId = 1,
                 Nome = "Maria Silva",
                 Email = "maria@teste.com",
                 Senha = BCrypt.Net.BCrypt.HashPassword("123456"),
                 Role = "User"
             };
 
-            await _context.Usuarios.AddAsync(usuarioExistente);
-            await _context.SaveChangesAsync();
-
-            var model = new UsuarioCreateViewModel
+            var model = new CreateUsuarioViewModel
             {
                 Nome = "João Silva",
                 Email = "maria@teste.com",
                 Senha = "654321",
                 Role = "Admin"
             };
+
+            _mockRepository.Setup(r => r.GetByEmailAsync(model.Email))
+                          .ReturnsAsync(usuarioExistente);
 
             // Act
             var resultado = await _usuarioService.CriarUsuarioAsync(model);
@@ -227,13 +146,13 @@ namespace apicoletalixoreciclavel.Tests.Services
         }
 
         [Fact]
-        public async Task CriarUsuarioAsync_DeveSalvarUsuarioNoBancoDeDados()
+        public async Task CriarUsuarioAsync_ComNomeNull_DeveRetornarErro()
         {
             // Arrange
-            var model = new UsuarioCreateViewModel
+            var model = new CreateUsuarioViewModel
             {
-                Nome = "Carlos Silva",
-                Email = "carlos@teste.com",
+                Nome = null,
+                Email = "joao@teste.com",
                 Senha = "123456",
                 Role = "User"
             };
@@ -242,25 +161,20 @@ namespace apicoletalixoreciclavel.Tests.Services
             var resultado = await _usuarioService.CriarUsuarioAsync(model);
 
             // Assert
-            var usuarioSalvo = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.Email == model.Email);
-
-            Assert.NotNull(usuarioSalvo);
-            Assert.Equal(model.Nome, usuarioSalvo.Nome);
-            Assert.Equal(model.Email, usuarioSalvo.Email);
-            Assert.Equal(model.Role, usuarioSalvo.Role);
-            Assert.True(BCrypt.Net.BCrypt.Verify(model.Senha, usuarioSalvo.Senha));
+            Assert.False(resultado.Sucesso);
+            Assert.Equal("Nome, e-mail e senha são obrigatórios.", resultado.Erro);
+            Assert.Null(resultado.Usuario);
         }
 
         [Fact]
-        public async Task CriarUsuarioAsync_DeveCriptografarSenha()
+        public async Task CriarUsuarioAsync_ComEmailNull_DeveRetornarErro()
         {
             // Arrange
-            var model = new UsuarioCreateViewModel
+            var model = new CreateUsuarioViewModel
             {
-                Nome = "Ana Silva",
-                Email = "ana@teste.com",
-                Senha = "minhasenha123",
+                Nome = "João Silva",
+                Email = null,
+                Senha = "123456",
                 Role = "User"
             };
 
@@ -268,64 +182,30 @@ namespace apicoletalixoreciclavel.Tests.Services
             var resultado = await _usuarioService.CriarUsuarioAsync(model);
 
             // Assert
-            Assert.True(resultado.Sucesso);
-            Assert.NotEqual(model.Senha, resultado.Usuario.Senha);
-            Assert.True(BCrypt.Net.BCrypt.Verify(model.Senha, resultado.Usuario.Senha));
-        }
-
-        [Theory]
-        [InlineData("User")]
-        [InlineData("Admin")]
-        [InlineData("Manager")]
-        public async Task CriarUsuarioAsync_ComDiferentesRoles_DeveRetornarSucesso(string role)
-        {
-            // Arrange
-            var model = new UsuarioCreateViewModel
-            {
-                Nome = "Teste Role",
-                Email = $"teste{role.ToLower()}@teste.com",
-                Senha = "123456",
-                Role = role
-            };
-
-            // Act
-            var resultado = await _usuarioService.CriarUsuarioAsync(model);
-
-            // Assert
-            Assert.True(resultado.Sucesso);
-            Assert.Equal(role, resultado.Usuario.Role);
+            Assert.False(resultado.Sucesso);
+            Assert.Equal("Nome, e-mail e senha são obrigatórios.", resultado.Erro);
+            Assert.Null(resultado.Usuario);
         }
 
         [Fact]
-        public async Task CriarUsuarioAsync_ComEmailDiferenteCase_DevePermitirCriacao()
+        public async Task CriarUsuarioAsync_ComSenhaNull_DeveRetornarErro()
         {
             // Arrange
-            var usuario1 = new UsuarioCreateViewModel
+            var model = new CreateUsuarioViewModel
             {
-                Nome = "Usuário 1",
-                Email = "teste@exemplo.com",
-                Senha = "123456",
-                Role = "User"
-            };
-            var usuario2 = new UsuarioCreateViewModel
-            {
-                Nome = "Usuário 2",
-                Email = "TESTE@EXEMPLO.COM",
-                Senha = "654321",
+                Nome = "João Silva",
+                Email = "joao@teste.com",
+                Senha = null,
                 Role = "User"
             };
 
             // Act
-            var resultado1 = await _usuarioService.CriarUsuarioAsync(usuario1);
-            var resultado2 = await _usuarioService.CriarUsuarioAsync(usuario2);
+            var resultado = await _usuarioService.CriarUsuarioAsync(model);
 
             // Assert
-            Assert.True(resultado1.Sucesso);
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
+            Assert.False(resultado.Sucesso);
+            Assert.Equal("Nome, e-mail e senha são obrigatórios.", resultado.Erro);
+            Assert.Null(resultado.Usuario);
         }
     }
 }

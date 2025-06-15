@@ -22,14 +22,14 @@ builder.Services.AddDbContext<DatabaseContext>(
 #region Repositorios
 builder.Services.AddScoped<IResiduoEletronicoRepository, ResiduoEletronicoRepository>();
 builder.Services.AddScoped<IRelatorioRepository, RelatorioRepository>();
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(); // Adicionado para suportar autenticação
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(); 
 #endregion
 
 #region Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IResiduoEletronicoService, ResiduoEletronicoService>();
-builder.Services.AddScoped<IRelatorioService, RelatorioService>(); // Mantido da feature/relatorio-context
-builder.Services.AddScoped<IUsuarioService, UsuarioService>(); // Mantido da develop
+builder.Services.AddScoped<IRelatorioService, RelatorioService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>(); 
 #endregion
 
 #region AutoMapper
@@ -41,19 +41,32 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
     // Mapeamentos ResiduoEletronico
     c.CreateMap<ResiduoEletronicoModel, ResiduoEletronicoViewModel>();
     c.CreateMap<ResiduoEletronicoViewModel, ResiduoEletronicoModel>();
-    c.CreateMap<CreateResiduoEletronicoViewModel, ResiduoEletronicoModel>();
-    c.CreateMap<ResiduoEletronicoModel, CreateResiduoEletronicoViewModel>();
-    c.CreateMap<UpdateResiduoEletronicoViewModel, ResiduoEletronicoModel>();
-    c.CreateMap<ResiduoEletronicoModel, UpdateResiduoEletronicoViewModel>();
+    c.CreateMap<CreateResiduoEletronicoViewModel, ResiduoEletronicoModel>()
+        .ForMember(dest => dest.ResiduoEletronicoId, opt => opt.Ignore())
+        .ForMember(dest => dest.Usuario, opt => opt.Ignore());
+    c.CreateMap<UpdateResiduoEletronicoViewModel, ResiduoEletronicoModel>()
+        .ForMember(dest => dest.ResiduoEletronicoId, opt => opt.Ignore())
+        .ForMember(dest => dest.Usuario, opt => opt.Ignore());
 
     // Mapeamentos Relatório
     c.CreateMap<CreateRelatorioViewModel, RelatorioModel>()
+        .ForMember(dest => dest.RelatorioId, opt => opt.Ignore())
         .ForMember(dest => dest.DataGeracao, opt => opt.MapFrom(src => DateTime.Now));
     c.CreateMap<RelatorioModel, RelatorioViewModel>();
+    c.CreateMap<UpdateRelatorioViewModel, RelatorioModel>()
+        .ForMember(dest => dest.RelatorioId, opt => opt.Ignore())
+        .ForMember(dest => dest.DataGeracao, opt => opt.Ignore());
 
-    // Mapeamentos Usuario (para autenticação)
+    // Mapeamentos Usuario
     c.CreateMap<UsuarioModel, UsuarioViewModel>();
-    c.CreateMap<CreateUsuarioViewModel, UsuarioModel>();
+    c.CreateMap<CreateUsuarioViewModel, UsuarioModel>()
+        .ForMember(dest => dest.UsuarioId, opt => opt.Ignore())
+        .ForMember(dest => dest.DataCriacao, opt => opt.MapFrom(src => DateTime.Now))
+        .ForMember(dest => dest.ResiduosEletronicos, opt => opt.Ignore());
+    c.CreateMap<UpdateUsuarioViewModel, UsuarioModel>()
+        .ForMember(dest => dest.UsuarioId, opt => opt.Ignore())
+        .ForMember(dest => dest.DataCriacao, opt => opt.Ignore())
+        .ForMember(dest => dest.ResiduosEletronicos, opt => opt.Ignore());
     c.CreateMap<LoginViewModel, UsuarioModel>();
 });
 
