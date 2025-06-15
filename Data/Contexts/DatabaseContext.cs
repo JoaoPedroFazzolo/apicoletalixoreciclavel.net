@@ -12,6 +12,8 @@ public class DatabaseContext : DbContext
 
     public virtual DbSet<UsuarioModel> Usuarios { get; set; }
     public virtual DbSet<ResiduoEletronicoModel> ResiduoEletronicos { get; set; }
+    public virtual DbSet<ColetaModel> Coletas { get; set; }
+    public virtual DbSet<PontoColetaModel> PontoColetas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -41,6 +43,38 @@ public class DatabaseContext : DbContext
             entity.Property(e => e.Modelo).IsRequired();
             entity.Property(e => e.Estado).IsRequired();
             entity.Property(e => e.Status).IsRequired();
+        });
+
+        modelBuilder.Entity<ColetaModel>(entity =>
+        {
+            entity.ToTable("coleta");
+            entity.HasKey(e => e.ColetaId);
+
+            entity.Property(e => e.DataColeta).IsRequired();
+
+            entity.HasOne(c => c.PontoColeta)
+                .WithMany(p => p.Coletas)
+                .HasForeignKey(c => c.PontoColetaId)
+                .IsRequired();
+
+            entity.HasOne(c => c.Residuo)
+                .WithMany()
+                .HasForeignKey(c => c.ResiduoId)
+                .IsRequired();
+        });
+
+        modelBuilder.Entity<PontoColetaModel>(entity =>
+        {
+            entity.ToTable("ponto_coleta");
+            entity.HasKey(e => e.PontoColetaId);
+
+            entity.Property(e => e.Nome).IsRequired();
+            entity.Property(e => e.Endereco).IsRequired();
+            entity.Property(e => e.Capacidade).IsRequired();
+
+            entity.HasMany(p => p.Coletas)
+                .WithOne(c => c.PontoColeta)
+                .HasForeignKey(c => c.PontoColetaId);
         });
     }
 }
