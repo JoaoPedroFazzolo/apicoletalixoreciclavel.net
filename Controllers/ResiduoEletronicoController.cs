@@ -6,10 +6,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apicoletalixoreciclavel.Controllers;
+
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
-public class ResiduoEletronicoController : Controller
+[Produces("application/json")]
+public class ResiduoEletronicoController : ControllerBase // CORRIGIDO: era Controller
 {
     private readonly IMapper _mapper;
     private readonly IResiduoEletronicoService _service;
@@ -20,7 +22,12 @@ public class ResiduoEletronicoController : Controller
         _service = residuoEletronicoService;
     }
     
+    /// <summary>
+    /// Obtém todos os resíduos eletrônicos
+    /// </summary>
+    /// <returns>Lista de resíduos eletrônicos</returns>
     [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<ResiduoEletronicoViewModel>), 200)]
     public ActionResult<IEnumerable<ResiduoEletronicoViewModel>> Get()
     {
         var residuo = _service.ObterTodosResiduoEletronicos();
@@ -28,7 +35,14 @@ public class ResiduoEletronicoController : Controller
         return Ok(viewModelList);
     }
 
+    /// <summary>
+    /// Obtém um resíduo eletrônico específico
+    /// </summary>
+    /// <param name="id">ID do resíduo eletrônico</param>
+    /// <returns>Resíduo eletrônico encontrado</returns>
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ResiduoEletronicoViewModel), 200)]
+    [ProducesResponseType(404)]
     public ActionResult<ResiduoEletronicoViewModel> GetById([FromRoute] long id)
     {
         var residuo = _service.ObterResiduoEletronicoPorId(id);
@@ -40,30 +54,72 @@ public class ResiduoEletronicoController : Controller
         return Ok(viewModel);
     }
 
+    /// <summary>
+    /// Cria um novo resíduo eletrônico
+    /// </summary>
+    /// <param name="viewModel">Dados do resíduo eletrônico</param>
+    /// <returns>Resíduo eletrônico criado</returns>
     [HttpPost]
+    [ProducesResponseType(typeof(ResiduoEletronicoViewModel), 201)]
+    [ProducesResponseType(400)]
     public ActionResult Post([FromBody] CreateResiduoEletronicoViewModel viewModel)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var residuo = _mapper.Map<ResiduoEletronicoModel>(viewModel);
         _service.AdicionarResiduoEletronico(residuo);
-        return CreatedAtAction(nameof(Get), new { id = residuo.ResiduoEletronicoId }, viewModel);
+        
+        var responseViewModel = _mapper.Map<ResiduoEletronicoViewModel>(residuo);
+        return CreatedAtAction(nameof(Get), new { id = residuo.ResiduoEletronicoId }, responseViewModel);
     }
 
+    /// <summary>
+    /// Atualiza um resíduo eletrônico existente
+    /// </summary>
+    /// <param name="id">ID do resíduo eletrônico</param>
+    /// <param name="viewModel">Dados atualizados</param>
+    /// <returns>Confirmação da atualização</returns>
     [HttpPut("{id}")]
-    public ActionResult Put(int id, [FromBody] UpdateResiduoEletronicoViewModel viewModel)
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(400)]
+    public ActionResult Put(long id, [FromBody] UpdateResiduoEletronicoViewModel viewModel) // CORRIGIDO: era int
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var residuo = _service.ObterResiduoEletronicoPorId(id);
+        if (residuo == null)
+        {
+            return NotFound();
+        }
+        
+        _mapper.Map(viewModel, residuo);
+        _service.AtualizarResiduoEletronico(residuo);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Remove um resíduo eletrônico
+    /// </summary>
+    /// <param name="id">ID do resíduo eletrônico</param>
+    /// <returns>Confirmação da remoção</returns>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    public ActionResult Delete([FromRoute] long id)
     {
         var residuo = _service.ObterResiduoEletronicoPorId(id);
         if (residuo == null)
         {
             return NotFound();
         }
-        _mapper.Map(viewModel, residuo);
-        _service.AtualizarResiduoEletronico(residuo);
-        return NoContent();
-    }
 
-    [HttpDelete("{id}")]
-    public ActionResult Delete([FromRoute] long id)
-    {
         _service.DeletarResiduoEletronico(id);
         return NoContent();
     }

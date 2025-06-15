@@ -1,9 +1,6 @@
-using apicoletalixoreciclavel.Data.Contexts;
-using apicoletalixoreciclavel.Models;
 using apicoletalixoreciclavel.Services;
 using apicoletalixoreciclavel.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace apicoletalixoreciclavel.Controllers;
 
@@ -19,7 +16,7 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost("registro")]
-    public async Task<IActionResult> CriarUsuario([FromBody] UsuarioCreateViewModel model)
+    public async Task<IActionResult> CriarUsuario([FromBody] CreateUsuarioViewModel model)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

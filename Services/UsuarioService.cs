@@ -1,20 +1,19 @@
-using apicoletalixoreciclavel.Data.Contexts;
+using apicoletalixoreciclavel.Data.Repository;
 using apicoletalixoreciclavel.Models;
 using apicoletalixoreciclavel.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace apicoletalixoreciclavel.Services
 {
     public class UsuarioService : IUsuarioService
     {
-        private readonly DatabaseContext _context;
+        private readonly IUsuarioRepository _usuarioRepository;
 
-        public UsuarioService(DatabaseContext context)
+        public UsuarioService(IUsuarioRepository usuarioRepository)
         {
-            _context = context;
+            _usuarioRepository = usuarioRepository;
         }
 
-        public async Task<(bool Sucesso, string? Erro, UsuarioModel? Usuario)> CriarUsuarioAsync(UsuarioCreateViewModel model)
+        public async Task<(bool Sucesso, string? Erro, UsuarioModel? Usuario)> CriarUsuarioAsync(CreateUsuarioViewModel model)
         {
             if (string.IsNullOrWhiteSpace(model.Nome) ||
                 string.IsNullOrWhiteSpace(model.Email) ||
@@ -23,9 +22,7 @@ namespace apicoletalixoreciclavel.Services
                 return (false, "Nome, e-mail e senha são obrigatórios.", null);
             }
 
-            var usuarioExistente = await _context.Usuarios
-                .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Email == model.Email);
+            var usuarioExistente = await _usuarioRepository.GetByEmailAsync(model.Email);
 
             if (usuarioExistente != null)
             {
@@ -40,10 +37,9 @@ namespace apicoletalixoreciclavel.Services
                 Role = model.Role
             };
 
-            _context.Usuarios.Add(novoUsuario);
-            await _context.SaveChangesAsync();
+            var usuarioCriado = await _usuarioRepository.CreateAsync(novoUsuario);
 
-            return (true, null, novoUsuario);
+            return (true, null, usuarioCriado);
         }
     }
 }
