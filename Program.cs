@@ -22,12 +22,14 @@ builder.Services.AddDbContext<DatabaseContext>(
 #region Repositorios
 builder.Services.AddScoped<IResiduoEletronicoRepository, ResiduoEletronicoRepository>();
 builder.Services.AddScoped<IRelatorioRepository, RelatorioRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(); // Adicionado para suportar autenticação
 #endregion
 
 #region Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IResiduoEletronicoService, ResiduoEletronicoService>();
-builder.Services.AddScoped<IRelatorioService, RelatorioService>();
+builder.Services.AddScoped<IRelatorioService, RelatorioService>(); // Mantido da feature/relatorio-context
+builder.Services.AddScoped<IUsuarioService, UsuarioService>(); // Mantido da develop
 #endregion
 
 #region AutoMapper
@@ -36,6 +38,7 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
     c.AllowNullCollections = true;
     c.AllowNullDestinationValues = true;
 
+    // Mapeamentos ResiduoEletronico
     c.CreateMap<ResiduoEletronicoModel, ResiduoEletronicoViewModel>();
     c.CreateMap<ResiduoEletronicoViewModel, ResiduoEletronicoModel>();
     c.CreateMap<CreateResiduoEletronicoViewModel, ResiduoEletronicoModel>();
@@ -43,9 +46,15 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
     c.CreateMap<UpdateResiduoEletronicoViewModel, ResiduoEletronicoModel>();
     c.CreateMap<ResiduoEletronicoModel, UpdateResiduoEletronicoViewModel>();
 
+    // Mapeamentos Relatório
     c.CreateMap<CreateRelatorioViewModel, RelatorioModel>()
         .ForMember(dest => dest.DataGeracao, opt => opt.MapFrom(src => DateTime.Now));
     c.CreateMap<RelatorioModel, RelatorioViewModel>();
+
+    // Mapeamentos Usuario (para autenticação)
+    c.CreateMap<UsuarioModel, UsuarioViewModel>();
+    c.CreateMap<CreateUsuarioViewModel, UsuarioModel>();
+    c.CreateMap<LoginViewModel, UsuarioModel>();
 });
 
 IMapper mapper = mapperConfig.CreateMapper();
@@ -70,6 +79,7 @@ builder.Services.AddAuthentication(options =>
 });
 #endregion
 
+// Controllers para API (não MVC)
 builder.Services.AddControllers();
 
 #region Swagger e Versionamento
@@ -96,11 +106,37 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1",
         Description = "API para gerenciamento de coleta de lixo reciclável"
     });
+    
+    // Configuração JWT no Swagger
+    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header usando Bearer scheme. Exemplo: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
 });
 #endregion
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

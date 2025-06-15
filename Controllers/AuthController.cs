@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using apicoletalixoreciclavel.Models;
 using apicoletalixoreciclavel.Services;
+using apicoletalixoreciclavel.ViewModels;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -17,7 +18,6 @@ public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
 
-    // CORRIGIDO: Injeção de dependência via construtor
     public AuthController(IAuthService authService)
     {
         _authService = authService;
@@ -26,23 +26,36 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Autentica um usuário e retorna um token JWT
     /// </summary>
-    /// <param name="user">Dados do usuário para autenticação</param>
+    /// <param name="model">Dados do usuário para autenticação</param>
     /// <returns>Token JWT para acesso à API</returns>
     /// <response code="200">Autenticação realizada com sucesso</response>
     /// <response code="401">Credenciais inválidas</response>
     [HttpPost("login")]
     [ProducesResponseType(200)]
     [ProducesResponseType(401)]
-    public IActionResult Login([FromBody] UsuarioModel user)
+    public async Task<IActionResult> Login([FromBody] LoginViewModel model)
     {
-        var authenticatedUser = _authService.Authenticate(user.Nome, user.Senha);
+        var authenticatedUser = await _authService.Authenticate(model.Email, model.Senha);
+
         if (authenticatedUser == null)
         {
-            return Unauthorized(new { message = "Credenciais inválidas" });
+            return Unauthorized(new { message = "Usuário ou senha inválidos." });
         }
 
         var token = GenerateJwtToken(authenticatedUser);
-        return Ok(new { Token = token, ExpiresIn = 300 }); // 5 minutos
+        
+        return Ok(new
+        {
+            Token = token,
+            ExpiresIn = 300, // 5 minutos
+            Usuario = new
+            {
+                authenticatedUser.UsuarioId,
+                authenticatedUser.Nome,
+                authenticatedUser.Email,
+                authenticatedUser.Role
+            }
+        });
     }
 
     private string GenerateJwtToken(UsuarioModel user)
@@ -51,14 +64,16 @@ public class AuthController : ControllerBase
         var securityKey = new SymmetricSecurityKey(secret);
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+        var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
-        SecurityTokenDescriptor securityTokenDescriptor = new SecurityTokenDescriptor()
+        var securityTokenDescriptor = new SecurityTokenDescriptor()
         {
-            Subject = new System.Security.Claims.ClaimsIdentity(new Claim[]
+            Subject = new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.Name, user.Nome),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role),
+                new Claim(ClaimTypes.NameIdentifier, user.UsuarioId.ToString()),
                 new Claim(ClaimTypes.Hash, Guid.NewGuid().ToString())
             }),
             Expires = DateTime.UtcNow.AddMinutes(5),
@@ -66,7 +81,7 @@ public class AuthController : ControllerBase
             SigningCredentials = credentials
         };
 
-        SecurityToken securityToken = jwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
+        var securityToken = jwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
         return jwtSecurityTokenHandler.WriteToken(securityToken);
     }
 }
