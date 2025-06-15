@@ -12,8 +12,8 @@ using apicoletalixoreciclavel.Data.Contexts;
 namespace apicoletalixoreciclavel.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250615163749_CreateRelatorioTableAndFixUsuarioTable")]
-    partial class CreateRelatorioTableAndFixUsuarioTable
+    [Migration("20250615174058_NewEntitiesTables")]
+    partial class NewEntitiesTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,42 @@ namespace apicoletalixoreciclavel.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("apicoletalixoreciclavel.Models.AlertaModel", b =>
+                {
+                    b.Property<long>("AlertaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(19)");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("AlertaId"));
+
+                    b.Property<DateTime>("DataAlerta")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("Mensagem")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("NVARCHAR2(500)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)");
+
+                    b.Property<string>("TipoAlerta")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)");
+
+                    b.Property<long?>("UsuarioId")
+                        .HasColumnType("NUMBER(19)");
+
+                    b.HasKey("AlertaId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Alertas");
+                });
 
             modelBuilder.Entity("apicoletalixoreciclavel.Models.RelatorioModel", b =>
                 {
@@ -176,6 +212,15 @@ namespace apicoletalixoreciclavel.Migrations
                         .IsUnique();
 
                     b.ToTable("Usuario", (string)null);
+                });
+
+            modelBuilder.Entity("apicoletalixoreciclavel.Models.AlertaModel", b =>
+                {
+                    b.HasOne("apicoletalixoreciclavel.Models.UsuarioModel", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("apicoletalixoreciclavel.Models.ResiduoEletronicoModel", b =>
