@@ -13,6 +13,8 @@ public class DatabaseContext : DbContext
     public virtual DbSet<UsuarioModel> Usuarios { get; set; }
     public virtual DbSet<ResiduoEletronicoModel> ResiduoEletronicos { get; set; }
     public virtual DbSet<RelatorioModel> Relatorios { get; set; }
+    public DbSet<AlertaModel> Alertas { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,42 +26,42 @@ public class DatabaseContext : DbContext
             entity.Property(e => e.Nome).IsRequired().HasMaxLength(100);
             entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
             entity.HasIndex(e => e.Email).IsUnique();
-            
+
             entity.Property(e => e.Telefone)
                 .IsRequired()
                 .HasMaxLength(20)
                 .HasDefaultValue("(00) 00000-0000");
-                
+
             entity.Property(e => e.Endereco)
                 .IsRequired()
                 .HasMaxLength(200)
                 .HasDefaultValue("Endereço não informado");
-                
+
             entity.Property(e => e.Cep)
                 .IsRequired()
                 .HasMaxLength(10)
                 .HasDefaultValue("00000-000");
-                
+
             entity.Property(e => e.Cidade)
                 .IsRequired()
                 .HasMaxLength(50)
                 .HasDefaultValue("Cidade não informada");
-                
+
             entity.Property(e => e.Estado)
                 .IsRequired()
                 .HasMaxLength(2)
                 .HasDefaultValue("SP");
-            
+
             entity.Property(e => e.Senha)
                 .IsRequired()
                 .HasMaxLength(255)
                 .HasDefaultValue("senha123");
-                
+
             entity.Property(e => e.Role)
                 .IsRequired()
                 .HasMaxLength(50)
-                .HasDefaultValue("User"); 
-                
+                .HasDefaultValue("User");
+
             entity.Property(e => e.DataCriacao)
                 .IsRequired()
                 .HasDefaultValueSql("SYSDATE");
