@@ -27,6 +27,7 @@ builder.Services.AddScoped<IColetaRepository, ColetaRepository>();
 builder.Services.AddScoped<IPontoColetaRepository, PontoColetaRepository>();
 builder.Services.AddScoped<IDestinacaoRepository, DestinacaoRepository>();
 builder.Services.AddScoped<IAlertaRepository, AlertaRepository>();
+builder.Services.AddScoped<INotificacaoRepository, NotificacaoRepository>();
 #endregion
 
 #region Services
@@ -38,6 +39,7 @@ builder.Services.AddScoped<IColetaService, ColetaService>();
 builder.Services.AddScoped<IPontoColetaService, PontoColetaService>();
 builder.Services.AddScoped<IDestinacaoService, DestinacaoService>();
 builder.Services.AddScoped<IAlertaService, AlertaService>();
+builder.Services.AddScoped<INotificacaoService, NotificacaoService>();
 #endregion
 
 #region AutoMapper
@@ -130,6 +132,16 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
         .ForMember(dest => dest.DataAlerta, opt => opt.Ignore()) // evita sobrescrever a data original, se necessário
         .ForMember(dest => dest.AlertaId, opt => opt.Ignore());  // evita sobrescrever o ID
 
+
+   // Mapeamento notificacao
+   // Mapeamentos Notificação
+   c.CreateMap<NotificacaoModel, NotificacaoViewModel>();
+   c.CreateMap<CreateNotificacaoViewModel, NotificacaoModel>()
+       .ForMember(dest => dest.NotificacaoId, opt => opt.Ignore())
+       .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "NaoLida"))
+       .ForMember(dest => dest.DataCriacao, opt => opt.MapFrom(src => DateTime.Now))
+       .ForMember(dest => dest.DataLeitura, opt => opt.Ignore())
+       .ForMember(dest => dest.Usuario, opt => opt.Ignore());
 
 });
 

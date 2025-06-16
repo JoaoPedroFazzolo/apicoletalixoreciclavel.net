@@ -8,19 +8,19 @@ namespace apicoletalixoreciclavel.Models
         
         [Required]
         [MaxLength(200)]
-        public string Titulo { get; set; } = string.Empty;
+        public string Titulo { get; set; }
         
         [Required]
         [MaxLength(1000)]
-        public string Mensagem { get; set; } = string.Empty;
+        public string Mensagem { get; set; }
         
         [Required]
         [MaxLength(50)]
-        public string Tipo { get; set; } = string.Empty; // Info, Warning, Error, Success
+        public string Tipo { get; set; }
         
         [Required]
         [MaxLength(50)]
-        public string Status { get; set; } = "NaoLida";
+        public string Status { get; set; }
         
         public DateTime DataCriacao { get; set; } = DateTime.Now;
         
