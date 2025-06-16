@@ -37,6 +37,11 @@ public class AuthServiceTests : IDisposable
             Nome = "Usuário Teste",
             Email = email,
             Senha = senhaHash,
+            Telefone = "123456",
+            Endereco = "Rua teste",
+            Cep = "123-000",
+            Cidade = "São Paulo",
+            Estado = "SP",
             Role = "User"
         };
 
@@ -82,6 +87,11 @@ public class AuthServiceTests : IDisposable
             Nome = "Usuário Teste",
             Email = email,
             Senha = senhaHash,
+            Telefone = "123456",
+            Endereco = "Rua teste",
+            Cep = "123-000",
+            Cidade = "São Paulo",
+            Estado = "SP",
             Role = "User"
         };
 
