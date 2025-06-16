@@ -26,6 +26,7 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IColetaRepository, ColetaRepository>();
 builder.Services.AddScoped<IPontoColetaRepository, PontoColetaRepository>();
 builder.Services.AddScoped<IDestinacaoRepository, DestinacaoRepository>();
+builder.Services.AddScoped<IAlertaRepository, AlertaRepository>();
 #endregion
 
 #region Services
@@ -36,6 +37,7 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IColetaService, ColetaService>();
 builder.Services.AddScoped<IPontoColetaService, PontoColetaService>();
 builder.Services.AddScoped<IDestinacaoService, DestinacaoService>();
+builder.Services.AddScoped<IAlertaService, AlertaService>();
 #endregion
 
 #region AutoMapper
@@ -80,9 +82,7 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
         .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ColetaId))
         .ForMember(dest => dest.Data_Coleta, opt => opt.MapFrom(src => src.DataColeta))
         .ForMember(dest => dest.Residuo_Id, opt => opt.MapFrom(src => src.ResiduoId))
-        .ForMember(dest => dest.Ponto_Coleta_Id, opt => opt.MapFrom(src => src.PontoColetaId))
-        .ForMember(dest => dest.PontoColetaNome, opt => opt.MapFrom(src => src.PontoColeta.Nome))
-        .ForMember(dest => dest.ResiduoTipo, opt => opt.MapFrom(src => src.Residuo.Tipo));
+        .ForMember(dest => dest.Ponto_Coleta_Id, opt => opt.MapFrom(src => src.PontoColetaId));
     c.CreateMap<CreateColetaViewModel, ColetaModel>()
         .ForMember(dest => dest.ColetaId, opt => opt.Ignore())
         .ForMember(dest => dest.PontoColeta, opt => opt.Ignore())
@@ -117,6 +117,19 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
         .ForMember(dest => dest.DestinacaoId, opt => opt.Ignore())
         .ForMember(dest => dest.DataCadastro, opt => opt.Ignore())
         .ForMember(dest => dest.DataAtualizacao, opt => opt.MapFrom(src => DateTime.Now));
+
+    // Mapeamento alerta
+    c.CreateMap<AlertaModel, AlertaViewModel>();
+    c.CreateMap<AlertaViewModel, AlertaModel>();
+    c.CreateMap<CreateAlertaViewModel, AlertaModel>()
+        .ForMember(dest => dest.AlertaId, opt => opt.Ignore())
+        .ForMember(dest => dest.DataAlerta, opt => opt.MapFrom(src => DateTime.Now))
+        .ForMember(dest => dest.Usuario, opt => opt.Ignore());
+    c.CreateMap<UpdateAlertaViewModel, AlertaModel>()
+        .ForMember(dest => dest.Usuario, opt => opt.Ignore())  // evita problemas com FK
+        .ForMember(dest => dest.DataAlerta, opt => opt.Ignore()) // evita sobrescrever a data original, se necessário
+        .ForMember(dest => dest.AlertaId, opt => opt.Ignore());  // evita sobrescrever o ID
+
 
 });
 

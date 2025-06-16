@@ -15,29 +15,29 @@ public class RelatorioRepository : IRelatorioRepository
     
     public IEnumerable<RelatorioModel> GetAll()
     {
-        return _context.Relatorios.ToList(); // Mudei de Relatorio para Relatorios
+        return _context.Relatorios.ToList();
     }
 
     public RelatorioModel GetById(long id)
     {
-        return _context.Relatorios.Find(id); // Mudei de Relatorio para Relatorios
+        return _context.Relatorios.Find(id);
     }
 
     public void Add(RelatorioModel relatorio)
     {
-        _context.Relatorios.Add(relatorio); // Mudei de Relatorio para Relatorios
+        _context.Relatorios.Add(relatorio);
         _context.SaveChanges();
     }
 
     public void Update(RelatorioModel relatorio)
     {
-        _context.Relatorios.Update(relatorio); // Mudei de Relatorio para Relatorios
+        _context.Relatorios.Update(relatorio);
         _context.SaveChanges();
     }
 
     public void Delete(RelatorioModel relatorio)
     {
-        _context.Relatorios.Remove(relatorio); // Mudei de Relatorio para Relatorios
+        _context.Relatorios.Remove(relatorio);
         _context.SaveChanges();
     }
 }

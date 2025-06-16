@@ -7,6 +7,6 @@ public class ColetaModel
     public long ResiduoId { get; set; }
     public long PontoColetaId { get; set; }
     
-    public ResiduoEletronicoModel Residuo { get; set; } = null!;
-    public PontoColetaModel PontoColeta { get; set; } = null!;
+    public ResiduoEletronicoModel Residuo { get; set; }
+    public PontoColetaModel PontoColeta { get; set; }
 }

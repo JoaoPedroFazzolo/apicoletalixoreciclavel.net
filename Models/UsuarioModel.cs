@@ -11,39 +11,37 @@ namespace apicoletalixoreciclavel.Models
         
         [Required]
         [MaxLength(100)]
-        public string Nome { get; set; } = string.Empty;
+        public string Nome { get; set; }
 
         
         [Required]
         [MaxLength(100)]
         [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; set; }
 
          [Required]
         [MaxLength(255)]
-        public string Senha { get; set; } = string.Empty;
+        public string Senha { get; set; }
         
         [Required]
         [MaxLength(20)]
-        public string Telefone { get; set; } = string.Empty;
+        public string Telefone { get; set; }
         
         [Required]
         [MaxLength(200)]
-        public string Endereco { get; set; } = string.Empty;
+        public string Endereco { get; set; }
 
         [Required]
         [MaxLength(10)]
-        public string Cep { get; set; } = string.Empty;
+        public string Cep { get; set; }
         
         [Required]
         [MaxLength(50)]
-        public string Cidade { get; set; } = string.Empty;
+        public string Cidade { get; set; }
         
         [Required]
         [MaxLength(2)]
-        public string Estado { get; set; } = string.Empty;
-        
-       
+        public string Estado { get; set; }
         
         [Required]
         [MaxLength(50)]
