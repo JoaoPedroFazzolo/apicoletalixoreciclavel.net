@@ -23,6 +23,8 @@ builder.Services.AddDbContext<DatabaseContext>(
 builder.Services.AddScoped<IResiduoEletronicoRepository, ResiduoEletronicoRepository>();
 builder.Services.AddScoped<IRelatorioRepository, RelatorioRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(); 
+builder.Services.AddScoped<IColetaRepository, ColetaRepository>();
+builder.Services.AddScoped<IPontoColetaRepository, PontoColetaRepository>();
 #endregion
 
 #region Services
@@ -30,6 +32,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IResiduoEletronicoService, ResiduoEletronicoService>();
 builder.Services.AddScoped<IRelatorioService, RelatorioService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>(); 
+builder.Services.AddScoped<IColetaService, ColetaService>();
+builder.Services.AddScoped<IPontoColetaService, PontoColetaService>();
 #endregion
 
 #region AutoMapper
@@ -68,6 +72,37 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
         .ForMember(dest => dest.DataCriacao, opt => opt.Ignore())
         .ForMember(dest => dest.ResiduosEletronicos, opt => opt.Ignore());
     c.CreateMap<LoginViewModel, UsuarioModel>();
+
+     // Mapeamentos Coleta
+    c.CreateMap<ColetaModel, ColetaViewModel>()
+        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ColetaId))
+        .ForMember(dest => dest.Data_Coleta, opt => opt.MapFrom(src => src.DataColeta))
+        .ForMember(dest => dest.Residuo_Id, opt => opt.MapFrom(src => src.ResiduoId))
+        .ForMember(dest => dest.Ponto_Coleta_Id, opt => opt.MapFrom(src => src.PontoColetaId))
+        .ForMember(dest => dest.PontoColetaNome, opt => opt.MapFrom(src => src.PontoColeta.Nome))
+        .ForMember(dest => dest.ResiduoTipo, opt => opt.MapFrom(src => src.Residuo.Tipo));
+    c.CreateMap<CreateColetaViewModel, ColetaModel>()
+        .ForMember(dest => dest.ColetaId, opt => opt.Ignore())
+        .ForMember(dest => dest.PontoColeta, opt => opt.Ignore())
+        .ForMember(dest => dest.Residuo, opt => opt.Ignore());
+    c.CreateMap<UpdateColetaViewModel, ColetaModel>()
+        .ForMember(dest => dest.ColetaId, opt => opt.MapFrom(src => src.Id))
+        .ForMember(dest => dest.DataColeta, opt => opt.MapFrom(src => src.DataColeta))
+        .ForMember(dest => dest.ResiduoId, opt => opt.MapFrom(src => src.ResiduoId))
+        .ForMember(dest => dest.PontoColetaId, opt => opt.MapFrom(src => src.PontoColetaId))
+        .ForMember(dest => dest.PontoColeta, opt => opt.Ignore())
+        .ForMember(dest => dest.Residuo, opt => opt.Ignore());
+
+    // Mapeamentos PontoColeta
+    c.CreateMap<PontoColetaModel, PontoColetaViewModel>()
+        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PontoColetaId))
+        .ForMember(dest => dest.ColetaCount, opt => opt.MapFrom(src => src.Coletas != null ? src.Coletas.Count : 0));
+    c.CreateMap<CreatePontoColetaViewModel, PontoColetaModel>()
+        .ForMember(dest => dest.PontoColetaId, opt => opt.Ignore())
+        .ForMember(dest => dest.Coletas, opt => opt.Ignore());
+    c.CreateMap<UpdatePontoColetaViewModel, PontoColetaModel>()
+        .ForMember(dest => dest.PontoColetaId, opt => opt.MapFrom(src => src.Id))
+        .ForMember(dest => dest.Coletas, opt => opt.Ignore());
 });
 
 IMapper mapper = mapperConfig.CreateMapper();
