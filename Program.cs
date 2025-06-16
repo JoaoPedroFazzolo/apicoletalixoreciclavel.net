@@ -26,6 +26,7 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IColetaRepository, ColetaRepository>();
 builder.Services.AddScoped<IPontoColetaRepository, PontoColetaRepository>();
 builder.Services.AddScoped<IDestinacaoRepository, DestinacaoRepository>();
+builder.Services.AddScoped<IEmpresaDestinacaoRepository, EmpresaDestinacaoRepository>();
 #endregion
 
 #region Services
@@ -36,6 +37,7 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IColetaService, ColetaService>();
 builder.Services.AddScoped<IPontoColetaService, PontoColetaService>();
 builder.Services.AddScoped<IDestinacaoService, DestinacaoService>();
+builder.Services.AddScoped<IEmpresaDestinacaoService, EmpresaDestinacaoService>();
 #endregion
 
 #region AutoMapper
@@ -105,8 +107,8 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
     c.CreateMap<UpdatePontoColetaViewModel, PontoColetaModel>()
         .ForMember(dest => dest.PontoColetaId, opt => opt.MapFrom(src => src.Id))
         .ForMember(dest => dest.Coletas, opt => opt.Ignore());
-        
-         // Mapeamentos Destinação
+
+    // Mapeamentos Destinação
     c.CreateMap<DestinacaoModel, DestinacaoViewModel>();
     c.CreateMap<CreateDestinacaoViewModel, DestinacaoModel>()
         .ForMember(dest => dest.DestinacaoId, opt => opt.Ignore())
@@ -117,7 +119,16 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
         .ForMember(dest => dest.DestinacaoId, opt => opt.Ignore())
         .ForMember(dest => dest.DataCadastro, opt => opt.Ignore())
         .ForMember(dest => dest.DataAtualizacao, opt => opt.MapFrom(src => DateTime.Now));
-
+    // Mapeamentos EmpresaDestinacao
+    c.CreateMap<EmpresaDestinacaoModel, EmpresaDestinacaoViewModel>();
+    c.CreateMap<CreateEmpresaDestinacaoViewModel, EmpresaDestinacaoModel>()
+        .ForMember(dest => dest.EmpresaDestinacaoId, opt => opt.Ignore())
+        .ForMember(dest => dest.DataCriacao, opt => opt.MapFrom(src => DateTime.Now))
+        .ForMember(dest => dest.DataAtualizacao, opt => opt.Ignore());
+    c.CreateMap<UpdateEmpresaDestinacaoViewModel, EmpresaDestinacaoModel>()
+        .ForMember(dest => dest.EmpresaDestinacaoId, opt => opt.Ignore())
+        .ForMember(dest => dest.DataCriacao, opt => opt.Ignore())
+        .ForMember(dest => dest.DataAtualizacao, opt => opt.MapFrom(src => DateTime.Now));
 });
 
 IMapper mapper = mapperConfig.CreateMapper();

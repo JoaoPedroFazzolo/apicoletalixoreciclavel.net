@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace apicoletalixoreciclavel.Models;
 
+[Table("Coleta")]
 public class ColetaModel
 {
     public long ColetaId { get; set; }

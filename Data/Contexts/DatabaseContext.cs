@@ -18,7 +18,8 @@ public class DatabaseContext : DbContext
     public DbSet<AlertaModel> Alertas { get; set; }    
     public DbSet<NotificacaoModel> Notificacoes { get; set; }
     public DbSet<DestinacaoModel> Destinacoes { get; set; }
-  
+    public DbSet<EmpresaDestinacaoModel> EmpresasDestinacao { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UsuarioModel>(entity =>
@@ -118,7 +119,7 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<PontoColetaModel>(entity =>
         {
-            entity.ToTable("Ponto_Coleta");
+            entity.ToTable("Ponto_coleta");
             entity.HasKey(e => e.PontoColetaId);
 
             entity.Property(e => e.Nome).IsRequired();
@@ -149,40 +150,50 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<DestinacaoModel>(entity =>
         {
             entity.ToTable("Destinacao");
-        entity.HasKey(e => e.DestinacaoId);
+            entity.HasKey(e => e.DestinacaoId);
 
-        entity.Property(e => e.Nome).IsRequired().HasMaxLength(200);
-        entity.Property(e => e.Tipo).IsRequired().HasMaxLength(100);
-        entity.Property(e => e.Descricao).HasMaxLength(1000);
-        entity.Property(e => e.Endereco).IsRequired().HasMaxLength(500);
-        entity.Property(e => e.Telefone).HasMaxLength(50);
-        entity.Property(e => e.Email).HasMaxLength(200);
-        entity.Property(e => e.ResponsavelTecnico).HasMaxLength(200);
-        entity.Property(e => e.Status).IsRequired().HasMaxLength(50);
-        entity.Property(e => e.CapacidadeMaxima).HasColumnType("decimal(18,2)");
-        entity.Property(e => e.UnidadeCapacidade).HasMaxLength(50);
-        entity.Property(e => e.DataCadastro).IsRequired();
-        entity.Property(e => e.DataAtualizacao).IsRequired(false);
-        entity.Property(e => e.Observacoes).HasMaxLength(500);
-        entity.Property(e => e.DiasAtendimento).HasMaxLength(200);
-        
-        entity.Property(e => e.PermiteColeta)
-            .IsRequired()
-            .HasColumnType("NUMBER(1)")
-            .HasConversion<int>();
-        
-        entity.Property(e => e.HorarioFuncionamentoInicio)
-            .HasMaxLength(8)
-            .HasColumnType("VARCHAR2(8)");
-            
-        entity.Property(e => e.HorarioFuncionamentoFim)
-            .HasMaxLength(8)
-            .HasColumnType("VARCHAR2(8)");
+            entity.Property(e => e.Nome).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.Tipo).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Descricao).HasMaxLength(1000);
+            entity.Property(e => e.Endereco).IsRequired().HasMaxLength(500);
+            entity.Property(e => e.Telefone).HasMaxLength(50);
+            entity.Property(e => e.Email).HasMaxLength(200);
+            entity.Property(e => e.ResponsavelTecnico).HasMaxLength(200);
+            entity.Property(e => e.Status).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.CapacidadeMaxima).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.UnidadeCapacidade).HasMaxLength(50);
+            entity.Property(e => e.DataCadastro).IsRequired();
+            entity.Property(e => e.DataAtualizacao).IsRequired(false);
+            entity.Property(e => e.Observacoes).HasMaxLength(500);
+            entity.Property(e => e.DiasAtendimento).HasMaxLength(200);
 
-        entity.HasIndex(e => e.Nome).IsUnique();
-        entity.HasIndex(e => e.Tipo);
-        entity.HasIndex(e => e.Status);
-    });
+            entity.Property(e => e.PermiteColeta)
+                .IsRequired()
+                .HasColumnType("NUMBER(1)")
+                .HasConversion<int>();
+
+            entity.Property(e => e.HorarioFuncionamentoInicio)
+                .HasMaxLength(8)
+                .HasColumnType("VARCHAR2(8)");
+
+            entity.Property(e => e.HorarioFuncionamentoFim)
+                .HasMaxLength(8)
+                .HasColumnType("VARCHAR2(8)");
+
+            entity.HasIndex(e => e.Nome).IsUnique();
+            entity.HasIndex(e => e.Tipo);
+            entity.HasIndex(e => e.Status);
+        });
+        modelBuilder.Entity<EmpresaDestinacaoModel>(entity =>
+        {
+            entity.ToTable("Empresa_destinacao");
+            entity.HasKey(e => e.EmpresaDestinacaoId);
+
+            entity.Property(e => e.Nome).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.Endereco).IsRequired().HasMaxLength(500);
+            entity.Property(e => e.DataCriacao).IsRequired().HasDefaultValueSql("SYSDATE");
+            entity.Property(e => e.DataAtualizacao).IsRequired(false);
+        });
+
     }
-
 }
