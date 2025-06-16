@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 using apicoletalixoreciclavel.Data.Contexts;
@@ -11,9 +12,11 @@ using apicoletalixoreciclavel.Data.Contexts;
 namespace apicoletalixoreciclavel.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250616005757_AddNotificationsTable")]
+    partial class AddNotificationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,102 +84,7 @@ namespace apicoletalixoreciclavel.Migrations
 
                     b.HasIndex("ResiduoId");
 
-                    b.ToTable("Coleta", (string)null);
-                });
-
-            modelBuilder.Entity("apicoletalixoreciclavel.Models.DestinacaoModel", b =>
-                {
-                    b.Property<long>("DestinacaoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(19)");
-
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("DestinacaoId"));
-
-                    b.Property<decimal?>("CapacidadeMaxima")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("DataAtualizacao")
-                        .HasColumnType("TIMESTAMP(7)");
-
-                    b.Property<DateTime>("DataCadastro")
-                        .HasColumnType("TIMESTAMP(7)");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("NVARCHAR2(1000)");
-
-                    b.Property<string>("DiasAtendimento")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("NVARCHAR2(200)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("NVARCHAR2(200)");
-
-                    b.Property<string>("Endereco")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("NVARCHAR2(500)");
-
-                    b.Property<string>("HorarioFuncionamentoFim")
-                        .HasMaxLength(8)
-                        .HasColumnType("VARCHAR2(8)");
-
-                    b.Property<string>("HorarioFuncionamentoInicio")
-                        .HasMaxLength(8)
-                        .HasColumnType("VARCHAR2(8)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("NVARCHAR2(200)");
-
-                    b.Property<string>("Observacoes")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("NVARCHAR2(500)");
-
-                    b.Property<int>("PermiteColeta")
-                        .HasColumnType("NUMBER(1)");
-
-                    b.Property<string>("ResponsavelTecnico")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("NVARCHAR2(200)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
-
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.Property<string>("UnidadeCapacidade")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
-
-                    b.HasKey("DestinacaoId");
-
-                    b.HasIndex("Nome")
-                        .IsUnique();
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("Tipo");
-
-                    b.ToTable("Destinacao", (string)null);
+                    b.ToTable("coleta", (string)null);
                 });
 
             modelBuilder.Entity("apicoletalixoreciclavel.Models.NotificacaoModel", b =>
@@ -248,7 +156,7 @@ namespace apicoletalixoreciclavel.Migrations
 
                     b.HasKey("PontoColetaId");
 
-                    b.ToTable("Ponto_Coleta", (string)null);
+                    b.ToTable("ponto_coleta", (string)null);
                 });
 
             modelBuilder.Entity("apicoletalixoreciclavel.Models.RelatorioModel", b =>
