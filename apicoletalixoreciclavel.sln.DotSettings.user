@@ -1,0 +1,13 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c7b3902b_002Da0d3_002D4091_002Dbc9d_002D188777e3f57b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ResiduoEletronicoControllerTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::2AC3DC35-AC06-473A-9C5A-A177C2733BE0::net8.0::apicoletalixoreciclavel.Tests.Services.AuthServiceTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::2AC3DC35-AC06-473A-9C5A-A177C2733BE0::net8.0::apicoletalixoreciclavel.Tests.Services.UsuarioServiceTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::2AC3DC35-AC06-473A-9C5A-A177C2733BE0::net8.0::apicoletalixoreciclavel.Tests.Services.ResiduoEletronicoServiceTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d7e06727_002D7729_002D434e_002D9afd_002D8337b40f945f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Get_ReturnsOkWithList_WhenResiduosExist" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::2AC3DC35-AC06-473A-9C5A-A177C2733BE0::net8.0::apicoletalixoreciclavel.Tests.Services.AuthServiceTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

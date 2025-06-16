@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apicoletalixoreciclavel-api
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__OracleConnection=${ORACLE_CONNECTION_STRING:-Data Source=localhost:1521/XE;User Id=apicoletalixo;Password=senha123;}
+    networks:
+      - apicoletalixo-network
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+
+networks:
+  apicoletalixo-network:
+    driver: bridge

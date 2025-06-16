@@ -1,0 +1,15 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace apicoletalixoreciclavel.Models;
+
+[Table("Coleta")]
+public class ColetaModel
+{
+    public long ColetaId { get; set; }
+    public DateTime DataColeta { get; set; }
+    public long ResiduoId { get; set; }
+    public long PontoColetaId { get; set; }
+    
+    public ResiduoEletronicoModel Residuo { get; set; } = null!;
+    public PontoColetaModel PontoColeta { get; set; } = null!;
+}
