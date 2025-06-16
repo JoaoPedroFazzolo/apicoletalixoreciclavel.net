@@ -3,9 +3,9 @@ namespace apicoletalixoreciclavel.Models;
 public class PontoColetaModel
 {
     public long PontoColetaId { get; set; }
-    public string Nome { get; set; }
-    public string Endereco { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public string Endereco { get; set; } = string.Empty;
     public long Capacidade { get; set; }
 
-    public virtual ICollection<ColetaModel> Coletas { get; set; }
+    public ICollection<ColetaModel> Coletas { get; set; } = new List<ColetaModel>();
 }

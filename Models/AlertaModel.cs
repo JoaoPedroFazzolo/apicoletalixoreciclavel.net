@@ -11,14 +11,14 @@ namespace apicoletalixoreciclavel.Models
         
         [Required]
         [MaxLength(500)]
-        public string Mensagem { get; set; }
+        public string Mensagem { get; set; } = string.Empty;
         
         [Required]
         public DateTime DataAlerta { get; set; } = DateTime.Now;
         
         [Required]
         [MaxLength(50)]
-        public string TipoAlerta { get; set; }
+        public string TipoAlerta { get; set; } = string.Empty;
         
         [Required]
         [MaxLength(50)]
