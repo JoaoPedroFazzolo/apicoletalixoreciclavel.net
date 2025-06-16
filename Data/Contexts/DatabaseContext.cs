@@ -32,38 +32,31 @@ public class DatabaseContext : DbContext
 
             entity.Property(e => e.Telefone)
                 .IsRequired()
-                .HasMaxLength(20)
-                .HasDefaultValue("(00) 00000-0000");
+                .HasMaxLength(20);
 
             entity.Property(e => e.Endereco)
                 .IsRequired()
-                .HasMaxLength(200)
-                .HasDefaultValue("Endereço não informado");
+                .HasMaxLength(200);
 
             entity.Property(e => e.Cep)
                 .IsRequired()
-                .HasMaxLength(10)
-                .HasDefaultValue("00000-000");
+                .HasMaxLength(10);
 
             entity.Property(e => e.Cidade)
                 .IsRequired()
-                .HasMaxLength(50)
-                .HasDefaultValue("Cidade não informada");
+                .HasMaxLength(50);
 
             entity.Property(e => e.Estado)
                 .IsRequired()
-                .HasMaxLength(2)
-                .HasDefaultValue("SP");
+                .HasMaxLength(2);
 
             entity.Property(e => e.Senha)
                 .IsRequired()
-                .HasMaxLength(255)
-                .HasDefaultValue("senha123");
+                .HasMaxLength(255);
 
             entity.Property(e => e.Role)
                 .IsRequired()
-                .HasMaxLength(50)
-                .HasDefaultValue("User");
+                .HasMaxLength(50);
 
             entity.Property(e => e.DataCriacao)
                 .IsRequired()
@@ -118,7 +111,7 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<PontoColetaModel>(entity =>
         {
-            entity.ToTable("Ponto_Coleta");
+            entity.ToTable("Ponto_coleta");
             entity.HasKey(e => e.PontoColetaId);
 
             entity.Property(e => e.Nome).IsRequired();

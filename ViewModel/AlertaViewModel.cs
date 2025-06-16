@@ -10,6 +10,5 @@ namespace apicoletalixoreciclavel.ViewModels
         public string TipoAlerta { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public long? UsuarioId { get; set; }
-        public string? NomeUsuario { get; set; }
     }
 }

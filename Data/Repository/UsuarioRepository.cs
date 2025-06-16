@@ -1,6 +1,8 @@
 using apicoletalixoreciclavel.Data.Contexts;
 using apicoletalixoreciclavel.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace apicoletalixoreciclavel.Data.Repository
 {
@@ -32,6 +34,29 @@ namespace apicoletalixoreciclavel.Data.Repository
             return await _context.Usuarios
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.UsuarioId == id);
+        }
+
+        public async Task<IReadOnlyList<UsuarioModel>> GetAllAsync()
+        {
+            return await _context.Usuarios
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task UpdateAsync(UsuarioModel usuario)
+        {
+            _context.Usuarios.Update(usuario);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(long id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario != null)
+            {
+                _context.Usuarios.Remove(usuario);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -34,5 +34,13 @@ namespace apicoletalixoreciclavel.ViewModels
         [Required(ErrorMessage = "O estado é obrigatório")]
         [StringLength(2, ErrorMessage = "O estado deve ter no máximo 2 caracteres")]
         public string Estado { get; set; } = string.Empty;
+        
+        [Required(ErrorMessage = "A senha é obrigatória")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "A senha deve ter entre 6 e 100 caracteres")]
+        public string Senha { get; set; } = string.Empty;
+        
+        [Required(ErrorMessage = "O papel (role) é obrigatório")]
+        [StringLength(50, ErrorMessage = "O papel deve ter no máximo 50 caracteres")]
+        public string Role { get; set; } = string.Empty;
     }
 }

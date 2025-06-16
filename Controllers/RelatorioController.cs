@@ -96,4 +96,76 @@ public class RelatorioController : ControllerBase
             return StatusCode(500, "Erro interno do servidor");
         }
     }
+    
+    [HttpPut("{id}")]
+    [ProducesResponseType(typeof(RelatorioViewModel), 200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
+    public ActionResult<RelatorioViewModel> Put(long id, [FromBody] UpdateRelatorioViewModel updateRelatorioViewModel)
+    {
+        if (id <= 0)
+        {
+            return BadRequest("ID deve ser maior que zero");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var relatorioExistente = _service.ObterRelatorioPorId(id);
+            if (relatorioExistente == null)
+            {
+                return NotFound($"Relatório com ID {id} não encontrado");
+            }
+            
+            _mapper.Map(updateRelatorioViewModel, relatorioExistente);
+
+            _service.AtualizarRelatorio(relatorioExistente);
+
+            var relatorioViewModel = _mapper.Map<RelatorioViewModel>(relatorioExistente);
+            return Ok(relatorioViewModel);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Erro interno do servidor");
+        }
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
+    public ActionResult Delete(long id)
+    {
+        if (id <= 0)
+        {
+            return BadRequest("ID deve ser maior que zero");
+        }
+
+        try
+        {
+            var relatorioExistente = _service.ObterRelatorioPorId(id);
+            if (relatorioExistente == null)
+            {
+                return NotFound($"Relatório com ID {id} não encontrado");
+            }
+
+            _service.DeletarRelatorio(relatorioExistente);
+            return NoContent();
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Erro interno do servidor");
+        }
+    }
+
 }
