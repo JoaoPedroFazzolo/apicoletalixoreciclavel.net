@@ -5,6 +5,7 @@ using apicoletalixoreciclavel.Models;
 using apicoletalixoreciclavel.Services;
 using apicoletalixoreciclavel.ViewModels;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,6 +15,7 @@ namespace apicoletalixoreciclavel.Controllers;
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
+[AllowAnonymous]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
