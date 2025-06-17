@@ -28,9 +28,9 @@ namespace apicoletalixoreciclavel.Controllers
         /// <returns>Lista de alertas</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<AlertaViewModel>), 200)]
-        public ActionResult<IEnumerable<AlertaViewModel>> GetAll()
+        public ActionResult<IEnumerable<AlertaViewModel>> Get([FromQuery] PaginationRequest pagination)
         {
-            var alertas = _alertaService.ObterTodosAlertas();
+            var alertas = _alertaService.ObterTodosAlertas(pagination.PageNumber, pagination.PageSize);
             var alertasViewModel = _mapper.Map<IEnumerable<AlertaViewModel>>(alertas);
             return Ok(alertasViewModel);
         }

@@ -4,7 +4,7 @@ namespace apicoletalixoreciclavel.Services
 {
     public interface INotificacaoService
     {
-        IEnumerable<NotificacaoModel> ObterTodasNotificacoes();
+        IEnumerable<NotificacaoModel> ObterTodasNotificacoes(int pageNumber = 1, int pageSize = 10);
         NotificacaoModel ObterNotificacaoPorId(long id);
         IEnumerable<NotificacaoModel> ObterNotificacoesPorUsuario(long usuarioId);
         IEnumerable<NotificacaoModel> ObterNotificacoesPorStatus(string status);

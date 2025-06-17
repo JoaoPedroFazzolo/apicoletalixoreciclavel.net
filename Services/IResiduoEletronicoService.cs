@@ -4,8 +4,8 @@ namespace apicoletalixoreciclavel.Services;
 
 public interface IResiduoEletronicoService
 {
-    IEnumerable<ResiduoEletronicoModel> ObterTodosResiduoEletronicos();
-    IEnumerable<ResiduoEletronicoModel> ObterTodosResiduoEletronicosComDetalhes();
+    IEnumerable<ResiduoEletronicoModel> ObterTodosResiduoEletronicos(int pageNumber = 1, int pageSize = 10);
+    IEnumerable<ResiduoEletronicoModel> ObterTodosResiduoEletronicosComDetalhes(int pageNumber = 1, int pageSize = 10);
     ResiduoEletronicoModel ObterResiduoEletronicoPorId(long residuoEletronicoId);
     ResiduoEletronicoModel ObterResiduoEletronicoPorIdComDetalhes(long residuoEletronicoId);
     void AdicionarResiduoEletronico(ResiduoEletronicoModel residuoEletronicoModel);

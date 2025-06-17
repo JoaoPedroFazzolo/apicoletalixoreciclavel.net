@@ -13,18 +13,22 @@ namespace apicoletalixoreciclavel.Data.Repository
             _context = context;
         }
 
-        public IEnumerable<NotificacaoModel> GetAll()
+        public IEnumerable<NotificacaoModel> GetAll(int pageNumber = 1, int pageSize = 10)
         {
             return _context.Notificacoes
                 .OrderByDescending(n => n.DataCriacao)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToList();
         }
 
-        public IEnumerable<NotificacaoModel> GetAllWithDetails()
+        public IEnumerable<NotificacaoModel> GetAllWithDetails(int pageNumber = 1, int pageSize = 10)
         {
             return _context.Notificacoes
                 .Include(n => n.Usuario)
                 .OrderByDescending(n => n.DataCriacao)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToList();
         }
 

@@ -13,13 +13,15 @@ public class ResiduoEletronicoRepository : IResiduoEletronicoRepository
         _context = context;
     }
     
-    public IEnumerable<ResiduoEletronicoModel> GetAll()
+    public IEnumerable<ResiduoEletronicoModel> GetAll(int pageNumber = 1, int pageSize = 10)
     {
         return _context.ResiduoEletronicos
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToList();
     }
 
-    public IEnumerable<ResiduoEletronicoModel> GetAllWithDetails()
+    public IEnumerable<ResiduoEletronicoModel> GetAllWithDetails(int pageNumber = 1, int pageSize = 10)
     {
         return _context.ResiduoEletronicos
             .Include(p => p.Tipo)
@@ -28,6 +30,8 @@ public class ResiduoEletronicoRepository : IResiduoEletronicoRepository
             .Include(p => p.Estado)
             .Include(p => p.Status)
             .Include(p => p.Usuario)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToList();
     }
 

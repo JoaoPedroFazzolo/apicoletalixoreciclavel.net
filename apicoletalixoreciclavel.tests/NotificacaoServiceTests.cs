@@ -23,18 +23,21 @@ namespace apicoletalixoreciclavel.Tests.Services
         [Fact]
         public void ObterTodasNotificacoes_DeveRetornarTodasComDetalhes()
         {
+            int pageNumber = 1;
+            int pageSize = 10;
+            
             var notificacoes = new List<NotificacaoModel>
             {
                 new NotificacaoModel { NotificacaoId = 1, Titulo = "A", Mensagem = "Msg A", Status = "NaoLida" },
                 new NotificacaoModel { NotificacaoId = 2, Titulo = "B", Mensagem = "Msg B", Status = "Lida" }
             };
 
-            _mockRepository.Setup(x => x.GetAllWithDetails()).Returns(notificacoes);
+            _mockRepository.Setup(x => x.GetAllWithDetails(pageNumber, pageSize)).Returns(notificacoes);
 
             var resultado = _service.ObterTodasNotificacoes();
 
             Assert.Equal(2, resultado.Count());
-            _mockRepository.Verify(x => x.GetAllWithDetails(), Times.Once);
+            _mockRepository.Verify(x => x.GetAllWithDetails(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]

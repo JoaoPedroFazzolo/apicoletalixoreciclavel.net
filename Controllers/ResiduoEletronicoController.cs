@@ -28,9 +28,9 @@ public class ResiduoEletronicoController : ControllerBase
     /// <returns>Lista de resíduos eletrônicos</returns>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<ResiduoEletronicoViewModel>), 200)]
-    public ActionResult<IEnumerable<ResiduoEletronicoViewModel>> Get()
+    public ActionResult<IEnumerable<ResiduoEletronicoViewModel>> Get([FromQuery] PaginationRequest pagination)
     {
-        var residuo = _service.ObterTodosResiduoEletronicos();
+        var residuo = _service.ObterTodosResiduoEletronicos(pagination.PageNumber, pagination.PageSize);
         var viewModelList = _mapper.Map<IEnumerable<ResiduoEletronicoViewModel>>(residuo);
         return Ok(viewModelList);
     }

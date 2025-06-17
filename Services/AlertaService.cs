@@ -12,11 +12,11 @@ namespace apicoletalixoreciclavel.Services
             _alertaRepository = alertaRepository;
         }
 
-        public IEnumerable<AlertaModel> ObterTodosAlertas()
+        public IEnumerable<AlertaModel> ObterTodosAlertas(int pageNumber = 1, int pageSize = 10)
         {
-            return _alertaRepository.GetAll();
+            return _alertaRepository.GetAll(pageNumber, pageSize);
         }
-
+        
         public AlertaModel ObterAlertaPorId(long id)
         {
             return _alertaRepository.GetById(id);

@@ -83,11 +83,11 @@ public class RelatorioController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<RelatorioViewModel>), 200)]
     [ProducesResponseType(500)]
-    public ActionResult<IEnumerable<RelatorioViewModel>> GetAll()
+    public ActionResult<IEnumerable<RelatorioViewModel>> Get([FromQuery] PaginationRequest pagination)
     {
         try
         {
-            var relatorios = _service.ObterTodosRelatorios();
+            var relatorios = _service.ObterTodosRelatorios(pagination.PageNumber, pagination.PageSize);
             var relatoriosViewModel = _mapper.Map<IEnumerable<RelatorioViewModel>>(relatorios);
             return Ok(relatoriosViewModel);
         }

@@ -4,8 +4,8 @@ namespace apicoletalixoreciclavel.Data.Repository;
 
 public interface IColetaRepository
 {
-    IEnumerable<ColetaModel> GetAll();
-    IEnumerable<ColetaModel> GetAllWithDetails();
+    IEnumerable<ColetaModel> GetAll(int pageNumber = 1, int pageSize = 10);
+    IEnumerable<ColetaModel> GetAllWithDetails(int pageNumber = 1, int pageSize = 10);
     ColetaModel GetById(long id);
     ColetaModel GetByIdWithDetails(long id);
     void Add(ColetaModel coletaModel);

@@ -24,13 +24,16 @@ namespace apicoletalixoreciclavel.Tests.Services
         public void ObterTodasColetas_DeveRetornarTodasColetas()
         {
             // Arrange
+            int pageNumber = 1;
+            int pageSize = 10;
+            
             var coletasEsperadas = new List<ColetaModel>
             {
                 new ColetaModel { ColetaId = 1, DataColeta = DateTime.Now, ResiduoId = 1, PontoColetaId = 1 },
                 new ColetaModel { ColetaId = 2, DataColeta = DateTime.Now, ResiduoId = 2, PontoColetaId = 1 }
             };
 
-            _mockRepository.Setup(x => x.GetAll()).Returns(coletasEsperadas);
+            _mockRepository.Setup(x => x.GetAll(pageNumber, pageSize)).Returns(coletasEsperadas);
 
             // Act
             var resultado = _service.ObterTodasColetas();
@@ -38,14 +41,17 @@ namespace apicoletalixoreciclavel.Tests.Services
             // Assert
             Assert.NotNull(resultado);
             Assert.Equal(2, resultado.Count());
-            _mockRepository.Verify(x => x.GetAll(), Times.Once);
+            _mockRepository.Verify(x => x.GetAll(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]
         public void ObterTodasColetas_QuandoNaoHaColetas_DeveRetornarListaVazia()
         {
             // Arrange
-            _mockRepository.Setup(x => x.GetAll()).Returns(new List<ColetaModel>());
+            int pageNumber = 1;
+            int pageSize = 10;
+            
+            _mockRepository.Setup(x => x.GetAll(pageNumber, pageSize)).Returns(new List<ColetaModel>());
 
             // Act
             var resultado = _service.ObterTodasColetas();
@@ -53,20 +59,23 @@ namespace apicoletalixoreciclavel.Tests.Services
             // Assert
             Assert.NotNull(resultado);
             Assert.Empty(resultado);
-            _mockRepository.Verify(x => x.GetAll(), Times.Once);
+            _mockRepository.Verify(x => x.GetAll(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]
         public void ObterTodasColetasComDetalhes_DeveRetornarTodasColetasComDetalhes()
         {
             // Arrange
+            int pageNumber = 1;
+            int pageSize = 10;
+            
             var coletasEsperadas = new List<ColetaModel>
             {
                 new ColetaModel { ColetaId = 1, DataColeta = DateTime.Now, ResiduoId = 1, PontoColetaId = 1 },
                 new ColetaModel { ColetaId = 2, DataColeta = DateTime.Now, ResiduoId = 2, PontoColetaId = 1 }
             };
 
-            _mockRepository.Setup(x => x.GetAllWithDetails()).Returns(coletasEsperadas);
+            _mockRepository.Setup(x => x.GetAllWithDetails(pageNumber, pageSize)).Returns(coletasEsperadas);
 
             // Act
             var resultado = _service.ObterTodasColetasComDetalhes();
@@ -74,7 +83,7 @@ namespace apicoletalixoreciclavel.Tests.Services
             // Assert
             Assert.NotNull(resultado);
             Assert.Equal(2, resultado.Count());
-            _mockRepository.Verify(x => x.GetAllWithDetails(), Times.Once);
+            _mockRepository.Verify(x => x.GetAllWithDetails(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]

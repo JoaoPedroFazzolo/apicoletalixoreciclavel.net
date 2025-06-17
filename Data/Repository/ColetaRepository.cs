@@ -13,17 +13,21 @@ public class ColetaRepository : IColetaRepository
         _context = context;
     }
     
-    public IEnumerable<ColetaModel> GetAll()
+    public IEnumerable<ColetaModel> GetAll(int pageNumber = 1, int pageSize = 10)
     {
         return _context.Coletas
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToList();
     }
 
-    public IEnumerable<ColetaModel> GetAllWithDetails()
+    public IEnumerable<ColetaModel> GetAllWithDetails(int pageNumber = 1, int pageSize = 10)
     {
         return _context.Coletas
             .Include(p => p.PontoColeta)
             .Include(p => p.Residuo)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToList();
     }
 

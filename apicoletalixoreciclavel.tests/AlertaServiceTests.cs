@@ -23,30 +23,38 @@ namespace apicoletalixoreciclavel.Tests.Services
         [Fact]
         public void ObterTodosAlertas_DeveRetornarTodosAlertas()
         {
+            
+            int pageNumber = 1;
+            int pageSize = 10;
+            
             var alertasEsperados = new List<AlertaModel>
             {
                 new AlertaModel { AlertaId = 1, Mensagem = "Alerta 1", TipoAlerta = TipoAlerta.ColetaAtrasada, Status = StatusAlerta.Ativo, DataAlerta = DateTime.Now },
                 new AlertaModel { AlertaId = 2, Mensagem = "Alerta 2", TipoAlerta = TipoAlerta.LixeiraCheia, Status = StatusAlerta.EmAndamento, DataAlerta = DateTime.Now }
             };
-            _mockRepository.Setup(x => x.GetAll()).Returns(alertasEsperados);
+            _mockRepository.Setup(x => x.GetAll(pageNumber, pageSize)).Returns(alertasEsperados);
 
             var resultado = _service.ObterTodosAlertas();
 
             Assert.NotNull(resultado);
             Assert.Equal(2, resultado.Count());
-            _mockRepository.Verify(x => x.GetAll(), Times.Once);
+            _mockRepository.Verify(x => x.GetAll(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]
         public void ObterTodosAlertas_QuandoNaoHaAlertas_DeveRetornarListaVazia()
         {
-            _mockRepository.Setup(x => x.GetAll()).Returns(new List<AlertaModel>());
+            
+            int pageNumber = 1;
+            int pageSize = 10;
+            
+            _mockRepository.Setup(x => x.GetAll(pageNumber, pageSize)).Returns(new List<AlertaModel>());
 
             var resultado = _service.ObterTodosAlertas();
 
             Assert.NotNull(resultado);
             Assert.Empty(resultado);
-            _mockRepository.Verify(x => x.GetAll(), Times.Once);
+            _mockRepository.Verify(x => x.GetAll(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]

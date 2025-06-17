@@ -23,49 +23,61 @@ namespace apicoletalixoreciclavel.Tests.Services
         [Fact]
         public void ObterTodosPontosColetas_DeveRetornarTodosPontosColetas()
         {
+            
+            int pageNumber = 1;
+            int pageSize = 10;
+            
             var pontosEsperados = new List<PontoColetaModel>
             {
                 new PontoColetaModel { PontoColetaId = 1, Nome = "Ponto A", Endereco = "Rua 1", Capacidade = 100 },
                 new PontoColetaModel { PontoColetaId = 2, Nome = "Ponto B", Endereco = "Rua 2", Capacidade = 200 }
             };
 
-            _mockRepository.Setup(x => x.GetAll()).Returns(pontosEsperados);
+            _mockRepository.Setup(x => x.GetAll(pageNumber, pageSize)).Returns(pontosEsperados);
 
             var resultado = _service.ObterTodosPontosColetas();
 
             Assert.NotNull(resultado);
             Assert.Equal(2, resultado.Count());
-            _mockRepository.Verify(x => x.GetAll(), Times.Once);
+            _mockRepository.Verify(x => x.GetAll(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]
         public void ObterTodosPontosColetas_QuandoNaoHaPontos_DeveRetornarListaVazia()
         {
-            _mockRepository.Setup(x => x.GetAll()).Returns(new List<PontoColetaModel>());
+            
+            int pageNumber = 1;
+            int pageSize = 10;
+            
+            _mockRepository.Setup(x => x.GetAll(pageNumber, pageSize)).Returns(new List<PontoColetaModel>());
 
             var resultado = _service.ObterTodosPontosColetas();
 
             Assert.NotNull(resultado);
             Assert.Empty(resultado);
-            _mockRepository.Verify(x => x.GetAll(), Times.Once);
+            _mockRepository.Verify(x => x.GetAll(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]
         public void ObterTodosPontosColetasComDetalhes_DeveRetornarTodosPontosColetasComDetalhes()
         {
+            
+            int pageNumber = 1;
+            int pageSize = 10;
+            
             var pontosEsperados = new List<PontoColetaModel>
             {
                 new PontoColetaModel { PontoColetaId = 1, Nome = "Ponto A", Endereco = "Rua 1", Capacidade = 100 },
                 new PontoColetaModel { PontoColetaId = 2, Nome = "Ponto B", Endereco = "Rua 2", Capacidade = 200 }
             };
 
-            _mockRepository.Setup(x => x.GetAllWithDetails()).Returns(pontosEsperados);
+            _mockRepository.Setup(x => x.GetAllWithDetails(pageNumber, pageSize)).Returns(pontosEsperados);
 
             var resultado = _service.ObterTodosPontosColetasComDetalhes();
 
             Assert.NotNull(resultado);
             Assert.Equal(2, resultado.Count());
-            _mockRepository.Verify(x => x.GetAllWithDetails(), Times.Once);
+            _mockRepository.Verify(x => x.GetAllWithDetails(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]

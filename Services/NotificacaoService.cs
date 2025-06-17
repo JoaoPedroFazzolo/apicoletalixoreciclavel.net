@@ -12,9 +12,14 @@ namespace apicoletalixoreciclavel.Services
             _notificacaoRepository = notificacaoRepository;
         }
 
-        public IEnumerable<NotificacaoModel> ObterTodasNotificacoes()
+        public IEnumerable<NotificacaoModel> ObterTodasNotificacoes(int pageNumber = 1, int pageSize = 10)
         {
-            return _notificacaoRepository.GetAllWithDetails();
+            return _notificacaoRepository.GetAll(pageNumber, pageSize);
+        }
+        
+        public IEnumerable<NotificacaoModel> ObterTodasNotificacoesComDetalhes(int pageNumber = 1, int pageSize = 10)
+        {
+            return _notificacaoRepository.GetAllWithDetails(pageNumber, pageSize);
         }
 
         public NotificacaoModel ObterNotificacaoPorId(long id)

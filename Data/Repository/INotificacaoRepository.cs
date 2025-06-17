@@ -4,8 +4,8 @@ namespace apicoletalixoreciclavel.Data.Repository
 {
     public interface INotificacaoRepository
     {
-        IEnumerable<NotificacaoModel> GetAll();
-        IEnumerable<NotificacaoModel> GetAllWithDetails();
+        IEnumerable<NotificacaoModel> GetAll(int pageNumber = 1, int pageSize = 10);
+        IEnumerable<NotificacaoModel> GetAllWithDetails(int pageNumber = 1, int pageSize = 10);
         NotificacaoModel GetById(long id);
         NotificacaoModel GetByIdWithDetails(long id);
         IEnumerable<NotificacaoModel> GetByUsuario(long usuarioId);

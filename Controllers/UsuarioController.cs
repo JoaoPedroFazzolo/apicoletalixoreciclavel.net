@@ -17,9 +17,9 @@ namespace apicoletalixoreciclavel.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> ListarUsuarios()
+        public async Task<IActionResult> ListarUsuarios([FromQuery] PaginationRequest pagination)
         {
-            var usuarios = await _usuarioService.ListarUsuariosAsync();
+            var usuarios = await _usuarioService.ListarUsuariosAsync(pagination.PageNumber, pagination.PageSize);
             return Ok(usuarios);
         }
         

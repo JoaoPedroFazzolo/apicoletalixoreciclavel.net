@@ -21,9 +21,9 @@ public class PontoColetaController : Controller
     }
     
     [HttpGet]
-    public ActionResult<IEnumerable<PontoColetaViewModel>> Get()
+    public ActionResult<IEnumerable<PontoColetaViewModel>> Get([FromQuery] PaginationRequest pagination)
     {
-        var pontos = _service.ObterTodosPontosColetas();
+        var pontos = _service.ObterTodosPontosColetas(pagination.PageNumber, pagination.PageSize);
         var viewModelList = _mapper.Map<IEnumerable<PontoColetaViewModel>>(pontos);
         return Ok(viewModelList);
     }

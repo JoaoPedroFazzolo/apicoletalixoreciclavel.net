@@ -13,9 +13,12 @@ public class RelatorioRepository : IRelatorioRepository
         _context = context;
     }
     
-    public IEnumerable<RelatorioModel> GetAll()
+    public IEnumerable<RelatorioModel> GetAll(int pageNumber = 1, int pageSize = 10)
     {
-        return _context.Relatorios.ToList();
+        return _context.Relatorios
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
     }
 
     public RelatorioModel GetById(long id)

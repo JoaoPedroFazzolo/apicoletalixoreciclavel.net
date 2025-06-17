@@ -1,8 +1,9 @@
 # This is a generated file. Not intended for manual editing.
+version: "3.8"
 services:
-  apicoletalixoreciclavel:
+  api:
     build:
-      context: "/arquivos/programação/analiseEDesenvolvimentoDeSistemas/2ano/fase4/apicoletalixoreciclavel"
+      context: "/Users/vrsacardi/apicoletalixoreciclavel.net"
       dockerfile: "Dockerfile"
       target: "base"
     command: []
@@ -10,12 +11,11 @@ services:
     - "dotnet"
     - "/app/bin/Debug/net8.0/apicoletalixoreciclavel.dll"
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
     image: "apicoletalixoreciclavel:dev"
     ports: []
     volumes:
-    - "/arquivos/programação/analiseEDesenvolvimentoDeSistemas/2ano/fase4/apicoletalixoreciclavel:/app:rw"
-    - "/arquivos/programação/analiseEDesenvolvimentoDeSistemas/2ano/fase4/apicoletalixoreciclavel:/src:rw"
-    - "/home/joaopedro/.nuget/packages:/home/app/.nuget/packages"
+    - "/Users/vrsacardi/apicoletalixoreciclavel.net:/app:rw"
+    - "/Users/vrsacardi/apicoletalixoreciclavel.net:/src:rw"
+    - "/Users/vrsacardi/.nuget/packages:/home/app/.nuget/packages"
     working_dir: "/app"

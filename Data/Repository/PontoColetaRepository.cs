@@ -13,15 +13,20 @@ public class PontoColetaRepository : IPontoColetaRepository
         _context = context;
     }
     
-    public IEnumerable<PontoColetaModel> GetAll()
+    public IEnumerable<PontoColetaModel> GetAll(int pageNumber = 1, int pageSize = 10)
     {
-        return _context.PontoColetas.ToList();
+        return _context.PontoColetas
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
     }
 
-    public IEnumerable<PontoColetaModel> GetAllWithDetails()
+    public IEnumerable<PontoColetaModel> GetAllWithDetails(int pageNumber = 1, int pageSize = 10)
     {
         return _context.PontoColetas
             .Include(p => p.Coletas)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToList();
     }
 

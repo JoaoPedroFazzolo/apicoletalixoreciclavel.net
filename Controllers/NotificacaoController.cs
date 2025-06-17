@@ -28,9 +28,9 @@ namespace apicoletalixoreciclavel.Controllers
         /// <returns>Lista de notificações</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<NotificacaoViewModel>), 200)]
-        public ActionResult<IEnumerable<NotificacaoViewModel>> GetAll()
+        public ActionResult<IEnumerable<NotificacaoViewModel>> Get([FromQuery] PaginationRequest pagination)
         {
-            var notificacoes = _notificacaoService.ObterTodasNotificacoes();
+            var notificacoes = _notificacaoService.ObterTodasNotificacoes(pagination.PageNumber, pagination.PageSize);
             var notificacoesViewModel = _mapper.Map<IEnumerable<NotificacaoViewModel>>(notificacoes);
             return Ok(notificacoesViewModel);
         }

@@ -23,31 +23,39 @@ namespace apicoletalixoreciclavel.Tests.Services
         [Fact]
         public void ObterTodosRelatorios_DeveRetornarTodosRelatorios()
         {
+            
+            int pageNumber = 1;
+            int pageSize = 10;
+            
             var relatoriosEsperados = new List<RelatorioModel>
             {
                 new RelatorioModel { RelatorioId = 1, Nome = "Relatório A", DataGeracao = DateTime.Now, TipoRelatorio = "Anual" },
                 new RelatorioModel { RelatorioId = 2, Nome = "Relatório B", DataGeracao = DateTime.Now, TipoRelatorio = "Mensal" }
             };
 
-            _mockRepository.Setup(x => x.GetAll()).Returns(relatoriosEsperados);
+            _mockRepository.Setup(x => x.GetAll(pageNumber, pageSize)).Returns(relatoriosEsperados);
 
             var resultado = _service.ObterTodosRelatorios();
 
             Assert.NotNull(resultado);
             Assert.Equal(2, resultado.Count());
-            _mockRepository.Verify(x => x.GetAll(), Times.Once);
+            _mockRepository.Verify(x => x.GetAll(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]
         public void ObterTodosRelatorios_QuandoNaoHaRelatorios_DeveRetornarListaVazia()
         {
-            _mockRepository.Setup(x => x.GetAll()).Returns(new List<RelatorioModel>());
+            
+            int pageNumber = 1;
+            int pageSize = 10;
+            
+            _mockRepository.Setup(x => x.GetAll(pageNumber, pageSize)).Returns(new List<RelatorioModel>());
 
             var resultado = _service.ObterTodosRelatorios();
 
             Assert.NotNull(resultado);
             Assert.Empty(resultado);
-            _mockRepository.Verify(x => x.GetAll(), Times.Once);
+            _mockRepository.Verify(x => x.GetAll(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]

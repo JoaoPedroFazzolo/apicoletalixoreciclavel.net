@@ -4,7 +4,7 @@ namespace apicoletalixoreciclavel.Services
 {
     public interface IAlertaService
     {
-        IEnumerable<AlertaModel> ObterTodosAlertas();
+        IEnumerable<AlertaModel> ObterTodosAlertas(int pageNumber = 1, int pageSize = 10);
         AlertaModel ObterAlertaPorId(long id);
         IEnumerable<AlertaModel> ObterAlertasPorStatus(string status);
         IEnumerable<AlertaModel> ObterAlertasPorTipo(string tipo);

@@ -21,9 +21,9 @@ public class ColetaController : Controller
     }
     
     [HttpGet]
-    public ActionResult<IEnumerable<ColetaViewModel>> Get()
+    public ActionResult<IEnumerable<ColetaViewModel>> Get([FromQuery] PaginationRequest pagination)
     {
-        var coletas = _service.ObterTodasColetas();
+        var coletas = _service.ObterTodasColetas(pagination.PageNumber, pagination.PageSize);
         var viewModelList = _mapper.Map<IEnumerable<ColetaViewModel>>(coletas);
         return Ok(viewModelList);
     }

@@ -50,9 +50,9 @@ namespace apicoletalixoreciclavel.Services
             return (true, null, usuarioCriado);
         }
 
-        public async Task<IReadOnlyList<UsuarioViewModel>> ListarUsuariosAsync()
+        public async Task<IReadOnlyList<UsuarioViewModel>> ListarUsuariosAsync(int pageNumber = 1, int pageSize = 10)
         {
-            var usuarios = await _usuarioRepository.GetAllAsync();
+            var usuarios = await _usuarioRepository.GetAllAsync(pageNumber, pageSize);
             return usuarios.Select(u => new UsuarioViewModel
             {
                 UsuarioId = u.UsuarioId,

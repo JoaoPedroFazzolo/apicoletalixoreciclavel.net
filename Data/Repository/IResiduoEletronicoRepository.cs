@@ -4,8 +4,8 @@ namespace apicoletalixoreciclavel.Data.Repository;
 
 public interface IResiduoEletronicoRepository
 {
-    IEnumerable<ResiduoEletronicoModel> GetAll();
-    IEnumerable<ResiduoEletronicoModel> GetAllWithDetails();
+    IEnumerable<ResiduoEletronicoModel> GetAll(int pageNumber = 1, int pageSize = 10);
+    IEnumerable<ResiduoEletronicoModel> GetAllWithDetails(int pageNumber = 1, int pageSize = 10);
     ResiduoEletronicoModel GetById(long id);
     ResiduoEletronicoModel GetByIdWithDetails(long usuarioId);
     void Add(ResiduoEletronicoModel residuoEletronicoModel);

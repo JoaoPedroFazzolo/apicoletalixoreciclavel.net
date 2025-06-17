@@ -13,14 +13,14 @@ public class ResiduoEletronicoService : IResiduoEletronicoService
         _residuoEletronicoRepository = residuoEletronicoRepository;
     }
 
-    public IEnumerable<ResiduoEletronicoModel> ObterTodosResiduoEletronicos()
+    public IEnumerable<ResiduoEletronicoModel> ObterTodosResiduoEletronicos(int pageNumber = 1, int pageSize = 10)
     {
-        return _residuoEletronicoRepository.GetAll();
+        return _residuoEletronicoRepository.GetAll(pageNumber, pageSize);
     }
 
-    public IEnumerable<ResiduoEletronicoModel> ObterTodosResiduoEletronicosComDetalhes()
+    public IEnumerable<ResiduoEletronicoModel> ObterTodosResiduoEletronicosComDetalhes(int pageNumber = 1, int pageSize = 10)
     {
-        return _residuoEletronicoRepository.GetAllWithDetails();
+        return _residuoEletronicoRepository.GetAllWithDetails(pageNumber, pageSize);
     }
 
     public ResiduoEletronicoModel ObterResiduoEletronicoPorId(long residuoEletronicoId)

@@ -12,9 +12,9 @@ namespace apicoletalixoreciclavel.Services
             _relatorioRepository = relatorioRepository;
         }
 
-        public IEnumerable<RelatorioModel> ObterTodosRelatorios()
+        public IEnumerable<RelatorioModel> ObterTodosRelatorios(int pageNumber = 1, int pageSize = 10)
         {
-            return _relatorioRepository.GetAll();
+            return _relatorioRepository.GetAll(pageNumber, pageSize);
         }
 
         public RelatorioModel ObterRelatorioPorId(long id)

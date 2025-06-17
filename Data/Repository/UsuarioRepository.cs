@@ -36,7 +36,7 @@ namespace apicoletalixoreciclavel.Data.Repository
                 .FirstOrDefaultAsync(u => u.UsuarioId == id);
         }
 
-        public async Task<IReadOnlyList<UsuarioModel>> GetAllAsync()
+        public async Task<IReadOnlyList<UsuarioModel>> GetAllAsync(int pageNumber = 1, int pageSize = 10)
         {
             return await _context.Usuarios
                 .AsNoTracking()

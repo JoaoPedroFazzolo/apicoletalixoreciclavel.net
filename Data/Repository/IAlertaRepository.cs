@@ -4,7 +4,7 @@ namespace apicoletalixoreciclavel.Data.Repository
 {
     public interface IAlertaRepository
     {
-        IEnumerable<AlertaModel> GetAll();
+        IEnumerable<AlertaModel> GetAll(int pageNumber = 1, int pageSize = 10);
         AlertaModel GetById(long id);
         IEnumerable<AlertaModel> GetByStatus(string status);
         IEnumerable<AlertaModel> GetByTipo(string tipo);

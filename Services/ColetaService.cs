@@ -13,14 +13,14 @@ public class ColetaService : IColetaService
         _coletaRepository = coletaRepository;
     }
 
-    public IEnumerable<ColetaModel> ObterTodasColetas()
+    public IEnumerable<ColetaModel> ObterTodasColetas(int pageNumber = 1, int pageSize = 10)
     {
-        return _coletaRepository.GetAll();
+        return _coletaRepository.GetAll(pageNumber, pageSize);
     }
 
-    public IEnumerable<ColetaModel> ObterTodasColetasComDetalhes()
+    public IEnumerable<ColetaModel> ObterTodasColetasComDetalhes(int pageNumber = 1, int pageSize = 10)
     {
-        return _coletaRepository.GetAllWithDetails();
+        return _coletaRepository.GetAllWithDetails(pageNumber, pageSize);
     }
 
     public ColetaModel ObterColetaPorId(long coletaId)

@@ -4,8 +4,8 @@ namespace apicoletalixoreciclavel.Services;
 
 public interface IColetaService
 {
-    IEnumerable<ColetaModel> ObterTodasColetas();
-    IEnumerable<ColetaModel> ObterTodasColetasComDetalhes();
+    IEnumerable<ColetaModel> ObterTodasColetas(int pageNumber = 1, int pageSize = 10);
+    IEnumerable<ColetaModel> ObterTodasColetasComDetalhes(int pageNumber = 1, int pageSize = 10);
     ColetaModel ObterColetaPorId(long coletaId);
     ColetaModel ObterColetaPorIdComDetalhes(long coletaId);
     void AdicionarColeta(ColetaModel coletaModel);

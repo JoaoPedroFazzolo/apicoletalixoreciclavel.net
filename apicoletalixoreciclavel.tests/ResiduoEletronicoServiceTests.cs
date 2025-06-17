@@ -24,13 +24,16 @@ namespace apicoletalixoreciclavel.Tests.Services
         public void ObterTodosResiduoEletronicos_DeveRetornarTodosResiduos()
         {
             // Arrange
+            int pageNumber = 1;
+            int pageSize = 10;
+            
             var residuosEsperados = new List<ResiduoEletronicoModel>
             {
                 new ResiduoEletronicoModel { ResiduoEletronicoId = 1, Tipo = "Smartphone", Marca = "Samsung", Modelo = "Galaxy S21" },
                 new ResiduoEletronicoModel { ResiduoEletronicoId = 2, Tipo = "Notebook", Marca = "Dell", Modelo = "Inspiron 15" }
             };
 
-            _mockRepository.Setup(x => x.GetAll()).Returns(residuosEsperados);
+            _mockRepository.Setup(x => x.GetAll(pageNumber, pageSize)).Returns(residuosEsperados);
 
             // Act
             var resultado = _service.ObterTodosResiduoEletronicos();
@@ -38,14 +41,17 @@ namespace apicoletalixoreciclavel.Tests.Services
             // Assert
             Assert.NotNull(resultado);
             Assert.Equal(2, resultado.Count());
-            _mockRepository.Verify(x => x.GetAll(), Times.Once);
+            _mockRepository.Verify(x => x.GetAll(pageNumber, pageSize), Times.Once);
         }
 
         [Fact]
         public void ObterTodosResiduoEletronicos_QuandoNaoHaResiduos_DeveRetornarListaVazia()
         {
             // Arrange
-            _mockRepository.Setup(x => x.GetAll()).Returns(new List<ResiduoEletronicoModel>());
+            int pageNumber = 1;
+            int pageSize = 10;
+            
+            _mockRepository.Setup(x => x.GetAll(pageNumber, pageSize)).Returns(new List<ResiduoEletronicoModel>());
 
             // Act
             var resultado = _service.ObterTodosResiduoEletronicos();
@@ -53,7 +59,7 @@ namespace apicoletalixoreciclavel.Tests.Services
             // Assert
             Assert.NotNull(resultado);
             Assert.Empty(resultado);
-            _mockRepository.Verify(x => x.GetAll(), Times.Once);
+            _mockRepository.Verify(x => x.GetAll(pageNumber, pageSize), Times.Once);
         }
         
 
@@ -61,13 +67,16 @@ namespace apicoletalixoreciclavel.Tests.Services
         public void ObterTodosResiduoEletronicosComDetalhes_DeveRetornarTodosResiduosComDetalhes()
         {
             // Arrange
+            int pageNumber = 1;
+            int pageSize = 10;
+            
             var residuosEsperados = new List<ResiduoEletronicoModel>
             {
                 new ResiduoEletronicoModel { ResiduoEletronicoId = 1, Tipo = "Smartphone", Marca = "Samsung" },
                 new ResiduoEletronicoModel { ResiduoEletronicoId = 2, Tipo = "Notebook", Marca = "Dell" }
             };
 
-            _mockRepository.Setup(x => x.GetAllWithDetails()).Returns(residuosEsperados);
+            _mockRepository.Setup(x => x.GetAllWithDetails(pageNumber, pageSize)).Returns(residuosEsperados);
 
             // Act
             var resultado = _service.ObterTodosResiduoEletronicosComDetalhes();
@@ -75,7 +84,7 @@ namespace apicoletalixoreciclavel.Tests.Services
             // Assert
             Assert.NotNull(resultado);
             Assert.Equal(2, resultado.Count());
-            _mockRepository.Verify(x => x.GetAllWithDetails(), Times.Once);
+            _mockRepository.Verify(x => x.GetAllWithDetails(pageNumber, pageSize), Times.Once);
         }
         
 

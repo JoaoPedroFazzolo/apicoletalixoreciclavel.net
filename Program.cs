@@ -30,7 +30,6 @@ builder.Services.AddScoped<IRelatorioRepository, RelatorioRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(); 
 builder.Services.AddScoped<IColetaRepository, ColetaRepository>();
 builder.Services.AddScoped<IPontoColetaRepository, PontoColetaRepository>();
-builder.Services.AddScoped<IDestinacaoRepository, DestinacaoRepository>();
 builder.Services.AddScoped<IAlertaRepository, AlertaRepository>();
 builder.Services.AddScoped<INotificacaoRepository, NotificacaoRepository>();
 #endregion
@@ -42,7 +41,6 @@ builder.Services.AddScoped<IRelatorioService, RelatorioService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>(); 
 builder.Services.AddScoped<IColetaService, ColetaService>();
 builder.Services.AddScoped<IPontoColetaService, PontoColetaService>();
-builder.Services.AddScoped<IDestinacaoService, DestinacaoService>();
 builder.Services.AddScoped<IAlertaService, AlertaService>();
 builder.Services.AddScoped<INotificacaoService, NotificacaoService>();
 #endregion
@@ -112,18 +110,6 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
     c.CreateMap<UpdatePontoColetaViewModel, PontoColetaModel>()
         .ForMember(dest => dest.PontoColetaId, opt => opt.MapFrom(src => src.Id))
         .ForMember(dest => dest.Coletas, opt => opt.Ignore());
-        
-         // Mapeamentos Destinação
-    c.CreateMap<DestinacaoModel, DestinacaoViewModel>();
-    c.CreateMap<CreateDestinacaoViewModel, DestinacaoModel>()
-        .ForMember(dest => dest.DestinacaoId, opt => opt.Ignore())
-        .ForMember(dest => dest.DataCadastro, opt => opt.MapFrom(src => DateTime.Now))
-        .ForMember(dest => dest.DataAtualizacao, opt => opt.Ignore())
-        .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Ativo"));
-    c.CreateMap<UpdateDestinacaoViewModel, DestinacaoModel>()
-        .ForMember(dest => dest.DestinacaoId, opt => opt.Ignore())
-        .ForMember(dest => dest.DataCadastro, opt => opt.Ignore())
-        .ForMember(dest => dest.DataAtualizacao, opt => opt.MapFrom(src => DateTime.Now));
 
     // Mapeamento alerta
     c.CreateMap<AlertaModel, AlertaViewModel>();

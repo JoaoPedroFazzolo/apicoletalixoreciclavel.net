@@ -12,14 +12,14 @@ public class PontoColetaService : IPontoColetaService
         _pontoColetaRepository = pontoColetaRepository;
     }
 
-    public IEnumerable<PontoColetaModel> ObterTodosPontosColetas()
+    public IEnumerable<PontoColetaModel> ObterTodosPontosColetas(int pageNumber = 1, int pageSize = 10)
     {
-        return _pontoColetaRepository.GetAll();
+        return _pontoColetaRepository.GetAll(pageNumber, pageSize);
     }
 
-    public IEnumerable<PontoColetaModel> ObterTodosPontosColetasComDetalhes()
+    public IEnumerable<PontoColetaModel> ObterTodosPontosColetasComDetalhes(int pageNumber = 1, int pageSize = 10)
     {
-        return _pontoColetaRepository.GetAllWithDetails();
+        return _pontoColetaRepository.GetAllWithDetails(pageNumber, pageSize);
     }
 
     public PontoColetaModel ObterPontoColetaPorId(long pontoColetaId)
