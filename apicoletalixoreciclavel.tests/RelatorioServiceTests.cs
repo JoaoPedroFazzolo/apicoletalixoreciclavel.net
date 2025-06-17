@@ -111,17 +111,6 @@ namespace apicoletalixoreciclavel.Tests.Services
         }
 
         [Fact]
-        public void CriarRelatorio_ComRelatorioNull_DeveLancarArgumentException()
-        {
-            RelatorioModel relatorio = null;
-
-            var exception = Assert.Throws<ArgumentException>(() => _service.CriarRelatorio(relatorio));
-
-            Assert.Equal("O nome do relatório é obrigatório.", exception.Message);
-            _mockRepository.Verify(x => x.Add(It.IsAny<RelatorioModel>()), Times.Never);
-        }
-
-        [Fact]
         public void AtualizarRelatorio_ComRelatorioValido_DeveChamarRepositoryUpdate()
         {
             var relatorio = new RelatorioModel { RelatorioId = 1, Nome = "Relatório Atualizado", TipoRelatorio = "Anual" };

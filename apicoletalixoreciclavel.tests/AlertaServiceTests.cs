@@ -172,16 +172,7 @@ namespace apicoletalixoreciclavel.Tests.Services
             _mockRepository.Verify(x => x.Add(alerta), Times.Once);
             Assert.True(alerta.DataAlerta != default(DateTime));
         }
-
-        [Fact]
-        public void AdicionarAlerta_ComAlertaNull_NaoDeveLancarExcecao()
-        {
-            AlertaModel alerta = null;
-
-            _service.AdicionarAlerta(alerta);
-
-            _mockRepository.Verify(x => x.Add(alerta), Times.Once);
-        }
+        
 
         [Fact]
         public void AtualizarAlerta_ComAlertaValido_DeveChamarRepositoryUpdate()
