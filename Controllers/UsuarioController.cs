@@ -3,10 +3,12 @@ using apicoletalixoreciclavel.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 
 namespace apicoletalixoreciclavel.Controllers
 {
     [ApiController]
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     public class UsuarioController : ControllerBase
     {

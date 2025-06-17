@@ -304,9 +304,6 @@ namespace apicoletalixoreciclavel.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)");
 
-                    b.Property<long>("PontoColetaId")
-                        .HasColumnType("NUMBER(19)");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -321,8 +318,6 @@ namespace apicoletalixoreciclavel.Migrations
                         .HasColumnType("NUMBER(19)");
 
                     b.HasKey("ResiduoEletronicoId");
-
-                    b.HasIndex("PontoColetaId");
 
                     b.HasIndex("UsuarioId");
 
@@ -435,19 +430,11 @@ namespace apicoletalixoreciclavel.Migrations
 
             modelBuilder.Entity("apicoletalixoreciclavel.Models.ResiduoEletronicoModel", b =>
                 {
-                    b.HasOne("apicoletalixoreciclavel.Models.PontoColetaModel", "PontoColeta")
-                        .WithMany()
-                        .HasForeignKey("PontoColetaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("apicoletalixoreciclavel.Models.UsuarioModel", "Usuario")
                         .WithMany("ResiduosEletronicos")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("PontoColeta");
 
                     b.Navigation("Usuario");
                 });

@@ -133,12 +133,11 @@ var mapperConfig = new AutoMapper.MapperConfiguration(c =>
         .ForMember(dest => dest.DataAlerta, opt => opt.MapFrom(src => DateTime.Now))
         .ForMember(dest => dest.Usuario, opt => opt.Ignore());
     c.CreateMap<UpdateAlertaViewModel, AlertaModel>()
-        .ForMember(dest => dest.Usuario, opt => opt.Ignore())  // evita problemas com FK
-        .ForMember(dest => dest.DataAlerta, opt => opt.Ignore()) // evita sobrescrever a data original, se necessário
-        .ForMember(dest => dest.AlertaId, opt => opt.Ignore());  // evita sobrescrever o ID
+        .ForMember(dest => dest.Usuario, opt => opt.Ignore())  
+        .ForMember(dest => dest.DataAlerta, opt => opt.Ignore()) 
+        .ForMember(dest => dest.AlertaId, opt => opt.Ignore());  
 
 
-   // Mapeamento notificacao
    // Mapeamentos Notificação
    c.CreateMap<NotificacaoModel, NotificacaoViewModel>();
    c.CreateMap<CreateNotificacaoViewModel, NotificacaoModel>()
