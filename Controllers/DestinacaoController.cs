@@ -3,6 +3,7 @@ using apicoletalixoreciclavel.Services;
 using apicoletalixoreciclavel.ViewModels;
 using Asp.Versioning;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apicoletalixoreciclavel.Controllers
@@ -11,6 +12,7 @@ namespace apicoletalixoreciclavel.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
+    [Authorize(Roles = "Admin")]
     public class DestinacaoController : ControllerBase
     {
         private readonly IDestinacaoService _destinacaoService;
