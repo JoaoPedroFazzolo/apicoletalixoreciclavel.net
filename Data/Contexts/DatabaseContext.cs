@@ -19,8 +19,6 @@ public class DatabaseContext : DbContext
     public DbSet<NotificacaoModel> Notificacoes { get; set; }
     public DbSet<DestinacaoModel> Destinacoes { get; set; }
 
-    public DbSet<EmpresaDestinacaoModel> EmpresasDestinacao { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UsuarioModel>(entity =>
@@ -177,17 +175,6 @@ public class DatabaseContext : DbContext
             entity.HasIndex(e => e.Nome).IsUnique();
             entity.HasIndex(e => e.Tipo);
             entity.HasIndex(e => e.Status);
-        });
-
-        modelBuilder.Entity<EmpresaDestinacaoModel>(entity =>
-        {
-            entity.ToTable("Empresa_destinacao");
-            entity.HasKey(e => e.EmpresaDestinacaoId);
-
-            entity.Property(e => e.Nome).IsRequired().HasMaxLength(200);
-            entity.Property(e => e.Endereco).IsRequired().HasMaxLength(500);
-            entity.Property(e => e.DataCriacao).IsRequired().HasDefaultValueSql("SYSDATE");
-            entity.Property(e => e.DataAtualizacao).IsRequired(false);
         });
     }
 }

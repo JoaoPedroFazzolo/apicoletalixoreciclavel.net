@@ -10,6 +10,7 @@ namespace apicoletalixoreciclavel.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     [Authorize(Roles = "Admin")]
@@ -29,6 +30,8 @@ namespace apicoletalixoreciclavel.Controllers
         /// </summary>
         /// <returns>Lista de alertas</returns>
         [HttpGet]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [ProducesResponseType(typeof(IEnumerable<AlertaViewModel>), 200)]
         public ActionResult<IEnumerable<AlertaViewModel>> GetAll()
         {
@@ -43,6 +46,8 @@ namespace apicoletalixoreciclavel.Controllers
         /// <param name="id">ID do alerta</param>
         /// <returns>Alerta encontrado</returns>
         [HttpGet("{id}")]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [ProducesResponseType(typeof(AlertaViewModel), 200)]
         [ProducesResponseType(404)]
         public ActionResult<AlertaViewModel> GetById([FromRoute] long id)
@@ -62,6 +67,8 @@ namespace apicoletalixoreciclavel.Controllers
         /// <param name="status">Status do alerta</param>
         /// <returns>Lista de alertas com o status especificado</returns>
         [HttpGet("status/{status}")]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [ProducesResponseType(typeof(IEnumerable<AlertaViewModel>), 200)]
         public ActionResult<IEnumerable<AlertaViewModel>> GetByStatus([FromRoute] string status)
         {
@@ -76,6 +83,8 @@ namespace apicoletalixoreciclavel.Controllers
         /// <param name="tipo">Tipo do alerta</param>
         /// <returns>Lista de alertas do tipo especificado</returns>
         [HttpGet("tipo/{tipo}")]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [ProducesResponseType(typeof(IEnumerable<AlertaViewModel>), 200)]
         public ActionResult<IEnumerable<AlertaViewModel>> GetByTipo([FromRoute] string tipo)
         {
@@ -90,6 +99,8 @@ namespace apicoletalixoreciclavel.Controllers
         /// <param name="usuarioId">ID do usuário</param>
         /// <returns>Lista de alertas do usuário</returns>
         [HttpGet("usuario/{usuarioId}")]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [ProducesResponseType(typeof(IEnumerable<AlertaViewModel>), 200)]
         public ActionResult<IEnumerable<AlertaViewModel>> GetByUsuario([FromRoute] long usuarioId)
         {
@@ -104,6 +115,8 @@ namespace apicoletalixoreciclavel.Controllers
         /// <param name="viewModel">Dados do alerta</param>
         /// <returns>Alerta criado</returns>
         [HttpPost]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [ProducesResponseType(typeof(AlertaViewModel), 201)]
         [ProducesResponseType(400)]
         public ActionResult<AlertaViewModel> Post([FromBody] CreateAlertaViewModel viewModel)
@@ -125,6 +138,8 @@ namespace apicoletalixoreciclavel.Controllers
         /// <param name="viewModel">Dados atualizados do alerta</param>
         /// <returns>Alerta atualizado</returns>
         [HttpPut("{id}")]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [ProducesResponseType(typeof(AlertaViewModel), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -151,6 +166,8 @@ namespace apicoletalixoreciclavel.Controllers
         /// <param name="status">Novo status</param>
         /// <returns>Confirmação da atualização</returns>
         [HttpPatch("{id}/status")]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public ActionResult UpdateStatus([FromRoute] long id, [FromBody] string status)
@@ -169,6 +186,8 @@ namespace apicoletalixoreciclavel.Controllers
         /// <param name="id">ID do alerta</param>
         /// <returns>Confirmação da remoção</returns>
         [HttpDelete("{id}")]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public ActionResult Delete([FromRoute] long id)
@@ -187,6 +206,8 @@ namespace apicoletalixoreciclavel.Controllers
         /// <param name="status">Status para contar</param>
         /// <returns>Número de alertas com o status</returns>
         [HttpGet("count/{status}")]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [ProducesResponseType(typeof(long), 200)]
         public ActionResult<long> CountByStatus([FromRoute] string status)
         {
