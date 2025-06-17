@@ -38,11 +38,14 @@
       }
     },
     "Docker": {
-      "commandName": "Docker",
+      "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-      "publishAllPorts": false,
-      "useSSL": false
+      "launchUrl": "swagger",
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://0.0.0.0:8080",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

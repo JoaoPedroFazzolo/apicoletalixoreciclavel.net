@@ -1,27 +1,26 @@
-using System.Text.Json;
 using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text.Json;
 
-namespace apicoletalixoreciclavel
+namespace apicoletalixoreciclavel.Configs
 {
     public class SwaggerDefaultValues : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             var apiDescription = context.ApiDescription;
-    
+
             operation.Deprecated |= apiDescription.IsDeprecated();
-    
+
             foreach (var responseType in context.ApiDescription.SupportedResponseTypes)
             {
-                var responseKey = responseType.IsDefaultResponse
-                    ? "default"
-                    : responseType.StatusCode.ToString();
-                var response = operation.Responses[responseKey];
-    
+                var responseKey = responseType.IsDefaultResponse ? "default" : responseType.StatusCode.ToString();
+                if (!operation.Responses.TryGetValue(responseKey, out var response)) continue;
+
                 foreach (var contentType in response.Content.Keys)
                 {
                     if (!responseType.ApiResponseFormats.Any(x => x.MediaType == contentType))
@@ -30,51 +29,50 @@ namespace apicoletalixoreciclavel
                     }
                 }
             }
-    
-            if (operation.Parameters == null)
-            {
-                return;
-            }
-    
+
+            if (operation.Parameters == null) return;
+
             foreach (var parameter in operation.Parameters)
             {
-                var description = apiDescription.ParameterDescriptions
-                    .First(p => p.Name == parameter.Name);
-    
+                var description = apiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
+
                 parameter.Description ??= description.ModelMetadata?.Description;
-    
+
                 if (parameter.Schema.Default == null && description.DefaultValue != null)
                 {
-                    var json = JsonSerializer.Serialize(
-                        description.DefaultValue,
-                        description.ModelMetadata.ModelType);
+                    var json = JsonSerializer.Serialize(description.DefaultValue, description.ModelMetadata.ModelType);
                     parameter.Schema.Default = OpenApiAnyFactory.CreateFromJson(json);
                 }
-    
+
                 parameter.Required |= description.IsRequired;
             }
         }
     }
-    
+
     public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
     {
-        private readonly IApiVersionDescriptionProvider provider;
-    
-        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this.provider = provider;
-    
+        private readonly IApiVersionDescriptionProvider _provider;
+
+        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
+        {
+            _provider = provider;
+        }
+
         public void Configure(SwaggerGenOptions options)
         {
-            foreach (var description in provider.ApiVersionDescriptions)
+            foreach (var description in _provider.ApiVersionDescriptions)
             {
                 options.SwaggerDoc(
                     description.GroupName,
-                    new OpenApiInfo()
+                    new OpenApiInfo
                     {
-                        Title = "Example API",
-                        Description = "An example API",
+                        Title = "API Coleta Lixo Reciclável",
                         Version = description.ApiVersion.ToString(),
+                        Description = "Documentação da API com versionamento"
                     });
             }
+
+            options.OperationFilter<SwaggerDefaultValues>();
         }
     }
 }
